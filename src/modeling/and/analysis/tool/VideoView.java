@@ -23,15 +23,16 @@ public class VideoView {
     private String mediaPath = "";        
     private EmbeddedMediaPlayer mediaPlayer;
     
-    VideoView(String vlcPath,String mediaURL)
+    VideoView(String vlcPath,String mediaURL, int width, int height)
     {
         this.mediaPath = mediaURL;
         NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(), vlcPath);
         MediaPlayerFactory mediaPlayerFactory = new MediaPlayerFactory();        
         ourCanvas.setBackground(Color.black);
         mediaPlayer = mediaPlayerFactory.newEmbeddedMediaPlayer();
+        mediaPlayer.setPause(true);
         mediaPlayer.setVideoSurface(mediaPlayerFactory.newVideoSurface(ourCanvas));
-        ourCanvas.setSize(400,250);
+        ourCanvas.setSize(width,height);
         ourCanvas.setVisible(true);
     }
     
@@ -40,6 +41,36 @@ public class VideoView {
         return ourCanvas;
     }
         
+    public void executePreviousChapter()
+    {
+        mediaPlayer.previousChapter();
+    }
+    
+    public void executeNextChapter()
+    {
+        mediaPlayer.nextChapter();
+    }
+    
+    public void executePause()
+    {
+        mediaPlayer.pause();
+    }
+    
+    public void executePlay()
+    {
+        mediaPlayer.play();
+    }
+    
+    public void executeStop()
+    {
+        mediaPlayer.stop();
+    }
+    
+    public long getTimestamp()
+    {
+        return mediaPlayer.getTime();
+    }
+    
     public void run()
     {
         mediaPlayer.playMedia(mediaPath);
