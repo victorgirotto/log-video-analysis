@@ -21,7 +21,8 @@ public class LogView {
     
     JTable logTable;
     DefaultTableModel logModel;
-    String[] columnNames = {"Timestamp", "Action"};
+    String[] columnNames = {"Action", "Timestamp"};
+    String startTime;
     
     public LogView(File file, String path) throws FileNotFoundException
     {
@@ -45,11 +46,27 @@ public class LogView {
         while(logScanner.hasNextLine()) {
             line = logScanner.nextLine();
             logData[x] = line.split(","); 
+            //remove extraneous timestamp info
+            try {
+            logData[x][1] = logData[x][1].toString().substring(0, logData[x][1].toString().indexOf('h'));
+            }
+            catch (Exception e)
+            {
+                System.out.println(e);
+            }
             x++;
         }
         
+        //set the start time as the timestamp of the first row
+        startTime = (String) logData[0][1];
+        
         //load the log data into the table
         logModel = new DefaultTableModel(logData, columnNames);
+    }
+    
+    public String getStartTime()
+    {
+        return startTime;
     }
     
     public DefaultTableModel getTableModel()

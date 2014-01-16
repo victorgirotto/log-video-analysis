@@ -3,15 +3,19 @@ package modeling.and.analysis.tool;
 import modeling.and.analysis.tool.VideoView;
 import javax.swing.table.DefaultTableModel;
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JFileChooser;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Properties;
+import javax.swing.Timer;
 import javax.swing.JFrame;
+import javax.swing.JTable;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -32,10 +36,22 @@ public class MATMain extends javax.swing.JFrame {
     private static JFileChooser ourFileSelector = new JFileChooser();
     VideoView currentVideo;
     String vlcPath;
+    enum videoSpeeds {
+        fastForward,
+        rewind,
+        normal
+    };
+    Timer playTimer;
+    long videoLength;
+    long startTime;
+    String strStartTime;
+    String strStartTimeArray[];
+    int selectedRowIndex = 0;
     
     public MATMain() {
         initComponents();
         
+        //Load configuration settings
         Properties prop = new Properties();
         try{
             prop.load(new FileInputStream("config.properties"));
@@ -44,6 +60,50 @@ public class MATMain extends javax.swing.JFrame {
         {
             System.out.println("No existing VLC path");
         }
+        
+        //set up periodic GUI updates
+         playTimer = new Timer(500, new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent evt) {
+             try {
+                //update video player progress bar
+                videoLength = currentVideo.getVideoLength();
+                long currentTime = currentVideo.getTimestamp();
+                double progress = currentTime * 100 / videoLength;
+                jProgressBar1.setValue((int) progress);
+
+                
+                //highlight current video action in log view
+                boolean playingNextAction = compareVideoToLog();
+                if(playingNextAction)
+                {
+                    selectedRowIndex++;
+                    logTable.setRowSelectionInterval(selectedRowIndex, selectedRowIndex);
+                }
+             }
+             catch (Exception e)
+             {
+                System.out.println("timer fail");
+             }
+             }
+        });
+    }
+    
+    private boolean compareVideoToLog()
+    {
+        boolean match = false;
+        String strLogTime = (String) logTable.getValueAt(selectedRowIndex+1, 1);
+        String strLogTimeArray[] = strLogTime.split(":");
+        long logTime = (Integer.parseInt(strLogTimeArray[0]) * 3600000 + Integer.parseInt(strLogTimeArray[1]) * 60000) - startTime;
+        long videoTime = currentVideo.getTimestamp();
+        
+        
+        if(videoTime >= logTime)
+        {
+            match = true;
+        }
+        
+        return match;
     }
 
     /**
@@ -66,14 +126,17 @@ public class MATMain extends javax.swing.JFrame {
         loadVideoButton = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
         videoPanel = new javax.swing.JPanel();
-        vidPrevChapterButton = new javax.swing.JToggleButton();
-        vidRewindButton = new javax.swing.JToggleButton();
         vidStopButton = new javax.swing.JToggleButton();
         vidPauseButton = new javax.swing.JToggleButton();
         vidPlayButton = new javax.swing.JToggleButton();
-        vidFastForwardButton = new javax.swing.JToggleButton();
-        vidNextChapterButton = new javax.swing.JToggleButton();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jToggleButton1 = new javax.swing.JToggleButton();
+        jToggleButton2 = new javax.swing.JToggleButton();
+        jToggleButton3 = new javax.swing.JToggleButton();
+        jToggleButton4 = new javax.swing.JToggleButton();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jProgressBar1 = new javax.swing.JProgressBar();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openMenuItem = new javax.swing.JMenuItem();
@@ -103,7 +166,7 @@ public class MATMain extends javax.swing.JFrame {
         );
         panel1Layout.setVerticalGroup(
             panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 250, Short.MAX_VALUE)
         );
 
         logTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -116,7 +179,7 @@ public class MATMain extends javax.swing.JFrame {
                 {null, null}
             },
             new String [] {
-                "Timestamp", "Action"
+                "Action", "Timestamp"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -185,23 +248,8 @@ public class MATMain extends javax.swing.JFrame {
         );
         videoPanelLayout.setVerticalGroup(
             videoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 304, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
-
-        vidPrevChapterButton.setText("|◄");
-        vidPrevChapterButton.setEnabled(false);
-        vidPrevChapterButton.setMaximumSize(new java.awt.Dimension(60, 30));
-        vidPrevChapterButton.setMinimumSize(new java.awt.Dimension(60, 30));
-        vidPrevChapterButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                vidPrevChapterButtonActionPerformed(evt);
-            }
-        });
-
-        vidRewindButton.setText("◀◀");
-        vidRewindButton.setEnabled(false);
-        vidRewindButton.setMaximumSize(new java.awt.Dimension(60, 30));
-        vidRewindButton.setMinimumSize(new java.awt.Dimension(60, 30));
 
         vidStopButton.setText("■");
         vidStopButton.setMaximumSize(new java.awt.Dimension(60, 30));
@@ -230,25 +278,34 @@ public class MATMain extends javax.swing.JFrame {
             }
         });
 
-        vidFastForwardButton.setText("▶▶");
-        vidFastForwardButton.setEnabled(false);
-        vidFastForwardButton.setMaximumSize(new java.awt.Dimension(60, 30));
-        vidFastForwardButton.setMinimumSize(new java.awt.Dimension(60, 30));
-
-        vidNextChapterButton.setText("►|");
-        vidNextChapterButton.setEnabled(false);
-        vidNextChapterButton.setMaximumSize(new java.awt.Dimension(60, 30));
-        vidNextChapterButton.setMinimumSize(new java.awt.Dimension(60, 30));
-        vidNextChapterButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                vidNextChapterButtonActionPerformed(evt);
-            }
-        });
-
-        jButton1.setText("Set VLC location");
+        jButton1.setText("Set VLC path");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Save log (.csv)");
+        jButton2.setEnabled(false);
+
+        jToggleButton1.setText("Affective filter");
+
+        jToggleButton2.setText("Embodied filter");
+
+        jToggleButton3.setText("Affective Filter");
+
+        jToggleButton4.setText("Embodied Filter");
+
+        jProgressBar1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jProgressBar1MouseClicked(evt);
+            }
+        });
+        jProgressBar1.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+                jProgressBar1CaretPositionChanged(evt);
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
 
@@ -319,55 +376,61 @@ public class MATMain extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(vidPrevChapterButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(vidRewindButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(vidStopButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(vidPauseButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(vidPlayButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(vidFastForwardButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(vidNextChapterButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
+                                        .addContainerGap()
                                         .addComponent(logAddActionButton)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(logDeleteActionButton)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(logSetTimestampButton)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(logSyncButton))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(14, 14, 14)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(logSyncButton))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(14, 14, 14)
+                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addContainerGap()
+                                        .addComponent(loadLogButton)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jButton2)))
+                                .addGap(0, 43, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(loadLogButton)))
-                        .addGap(0, 45, Short.MAX_VALUE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(loadVideoButton)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jButton1)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(videoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(loadVideoButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton1)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(videoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(vidStopButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(vidPauseButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(vidPlayButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jToggleButton3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jToggleButton4))
                     .addComponent(jButton7)
-                    .addComponent(panel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(panel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jToggleButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jToggleButton2))
+                    .addComponent(jTabbedPane1))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -383,25 +446,37 @@ public class MATMain extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(videoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(vidPrevChapterButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(vidRewindButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(vidStopButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(vidPauseButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(vidPlayButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(vidFastForwardButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(vidNextChapterButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(55, 55, 55)
-                        .addComponent(loadLogButton)
+                            .addComponent(vidPlayButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(34, 34, 34)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(loadLogButton)
+                            .addComponent(jButton2))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(107, 107, 107)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(logAddActionButton)
                             .addComponent(logSetTimestampButton)
                             .addComponent(logSyncButton)
                             .addComponent(logDeleteActionButton)))
-                    .addComponent(panel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(panel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jToggleButton1)
+                            .addComponent(jToggleButton2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jToggleButton3)
+                            .addComponent(jToggleButton4))
+                        .addGap(0, 46, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -431,13 +506,20 @@ public class MATMain extends javax.swing.JFrame {
        currentVideo = new VideoView(vlcPath, mediaPath, videoPanel.getWidth(), videoPanel.getHeight());
        videoPanel.setVisible(true);
        videoPanel.add(currentVideo.getVideoDisplay(), BorderLayout.CENTER);
+       //GUI updates
        currentVideo.run();
        vidPlayButton.setSelected(true);
+       //start timer functionalities that occur during playback  
+       startPlay();
        } catch(Exception e)
        {
            JFrame parent = (JFrame) SwingUtilities.getWindowAncestor(this);
            JOptionPane.showMessageDialog(parent, "Please select a valid video file.", "Playback Error", JOptionPane.ERROR_MESSAGE);
        }
+       strStartTimeArray = strStartTime.split(":");
+       System.out.println(strStartTimeArray[1]);
+       startTime = Integer.parseInt(strStartTimeArray[0]) * 3600000 + Integer.parseInt(strStartTimeArray[1]) * 60000;       
+       System.out.println(startTime);
     }//GEN-LAST:event_loadVideoButtonActionPerformed
 
     private void vidStopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vidStopButtonActionPerformed
@@ -446,19 +528,13 @@ public class MATMain extends javax.swing.JFrame {
             currentVideo.executeStop();
             vidPlayButton.setSelected(false);
             vidPauseButton.setSelected(false);
+            stopPlay();
     }//GEN-LAST:event_vidStopButtonActionPerformed
-
-    private void vidPrevChapterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vidPrevChapterButtonActionPerformed
-        currentVideo.executePreviousChapter();
-    }//GEN-LAST:event_vidPrevChapterButtonActionPerformed
-
-    private void vidNextChapterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vidNextChapterButtonActionPerformed
-        currentVideo.executeNextChapter();
-    }//GEN-LAST:event_vidNextChapterButtonActionPerformed
-
+    
     private void loadLogButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadLogButtonActionPerformed
        String logPath = "";
        File ourFile;
+
        
        //Clear current log file
        logTable.removeAll();
@@ -476,7 +552,10 @@ public class MATMain extends javax.swing.JFrame {
            DefaultTableModel newModel;
            newModel = ourLog.getTableModel();
            logTable.setModel(newModel);
+           logTable.setRowSelectionInterval(0, 0);
            logTable.setVisible(true);
+           //align log timestamps w/ video time
+           strStartTime = ourLog.getStartTime();        
        } catch(Exception e)
        {
            //PRINT ERROR MESSAGE
@@ -487,12 +566,12 @@ public class MATMain extends javax.swing.JFrame {
     private void vidPlayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vidPlayButtonActionPerformed
         if(vidPauseButton.isSelected())
         {
-            currentVideo.executePlay();
+            startPlay();
             vidPauseButton.setSelected(false);
         }
         if(vidStopButton.isSelected())
         {
-            currentVideo.executePlay();
+            startPlay();
             vidStopButton.setSelected(false);
         }
         else
@@ -502,19 +581,32 @@ public class MATMain extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_vidPlayButtonActionPerformed
 
+    private void startPlay() {
+        currentVideo.executePlay();
+        playTimer.start();
+    }
+    
+    private void stopPlay() {
+        playTimer.stop();//purge();
+    }
+    
     private void logAddActionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logAddActionButtonActionPerformed
         long ourTimestamp;
         int currentRow = logTable.getSelectedRow();
+        Object[] newRow = new Object[2];
         DefaultTableModel ourModel = (DefaultTableModel) logTable.getModel();
         try {
             ourTimestamp = currentVideo.getTimestamp();
+            newRow[0] = "new action";
+            newRow[1] = ourTimestamp;
         } catch (Exception e)
         {
             //if a video is not currently loaded
             ourTimestamp = 0;
+            newRow[0] = "new action";
+            newRow[1] = "";
         }
-        //create the new row with the current video timestamp
-        Object[] newRow = {ourTimestamp, "new action"};
+
         //insert the new row below the currently selected row
         ourModel.insertRow(currentRow+1, newRow);
     }//GEN-LAST:event_logAddActionButtonActionPerformed
@@ -532,13 +624,17 @@ public class MATMain extends javax.swing.JFrame {
     }//GEN-LAST:event_logDeleteActionButtonActionPerformed
 
     private void logSetTimestampButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logSetTimestampButtonActionPerformed
-        long ourTimestamp;
+        long ourTimestamp, hours, minutes;
+        String strTimestamp;
         int currentRow = logTable.getSelectedRow();
         DefaultTableModel ourModel = (DefaultTableModel) logTable.getModel();
         try {
-            ourTimestamp = currentVideo.getTimestamp();
+            ourTimestamp = currentVideo.getTimestamp() + startTime;
             //update timestamp of selected row with current video timestamp
-            ourModel.setValueAt(ourTimestamp, currentRow, 0);
+            hours = ourTimestamp / 3600000;
+            minutes = (ourTimestamp-(hours*3600000)) / 60000;
+            strTimestamp = hours + ":" + minutes;
+            ourModel.setValueAt(strTimestamp, currentRow, 1);
         } catch (Exception e)
         {
             //if a video is not currently loaded
@@ -551,6 +647,7 @@ public class MATMain extends javax.swing.JFrame {
         {
             currentVideo.executePause();
             vidPlayButton.setSelected(false);
+            stopPlay();
         }
         if(vidStopButton.isSelected())
         {
@@ -584,6 +681,38 @@ public class MATMain extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jProgressBar1CaretPositionChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_jProgressBar1CaretPositionChanged
+    }//GEN-LAST:event_jProgressBar1CaretPositionChanged
+
+    private void jProgressBar1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jProgressBar1MouseClicked
+        //get the new position
+        int mouseX = evt.getX();
+        //Computes how far along the mouse is relative to the component width then multiply it by the progress bar's maximum value.
+        int newPercentComplete = (int)Math.round(((double)mouseX / (double)jProgressBar1.getWidth()) * jProgressBar1.getMaximum());
+        System.out.println(newPercentComplete);
+        //seek in video
+        currentVideo.setNewPosition(newPercentComplete);
+        //update progress bar        
+        jProgressBar1.setValue(newPercentComplete);
+
+    }//GEN-LAST:event_jProgressBar1MouseClicked
+
+    private void changeVideoSpeed(videoSpeeds speed)
+    {
+        if(speed == videoSpeeds.fastForward)
+        {
+            currentVideo.executeFastForward();
+        }
+        else if(speed == videoSpeeds.rewind)
+        {
+            currentVideo.executeRewind();
+        }
+        else if(speed == videoSpeeds.normal)
+        {
+            currentVideo.executePlay();
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -614,7 +743,7 @@ public class MATMain extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MATMain().setVisible(true);               
+                new MATMain().setVisible(true);  
             }
         });
     }
@@ -630,8 +759,15 @@ public class MATMain extends javax.swing.JFrame {
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton7;
+    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JToggleButton jToggleButton1;
+    private javax.swing.JToggleButton jToggleButton2;
+    private javax.swing.JToggleButton jToggleButton3;
+    private javax.swing.JToggleButton jToggleButton4;
     private javax.swing.JButton loadLogButton;
     private javax.swing.JButton loadVideoButton;
     private javax.swing.JButton logAddActionButton;
@@ -645,12 +781,8 @@ public class MATMain extends javax.swing.JFrame {
     private javax.swing.JMenuItem pasteMenuItem;
     private javax.swing.JMenuItem saveAsMenuItem;
     private javax.swing.JMenuItem saveMenuItem;
-    private javax.swing.JToggleButton vidFastForwardButton;
-    private javax.swing.JToggleButton vidNextChapterButton;
     private javax.swing.JToggleButton vidPauseButton;
     private javax.swing.JToggleButton vidPlayButton;
-    private javax.swing.JToggleButton vidPrevChapterButton;
-    private javax.swing.JToggleButton vidRewindButton;
     private javax.swing.JToggleButton vidStopButton;
     private javax.swing.JPanel videoPanel;
     // End of variables declaration//GEN-END:variables

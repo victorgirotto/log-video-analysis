@@ -40,6 +40,12 @@ public class VideoView {
     {
         return ourCanvas;
     }
+    
+    public long getVideoLength()
+    {
+        long length = mediaPlayer.getLength();
+        return length;
+    }
         
     public void executePreviousChapter()
     {
@@ -49,6 +55,18 @@ public class VideoView {
     public void executeNextChapter()
     {
         mediaPlayer.nextChapter();
+    }
+    
+    public void executeRewind()
+    {
+        long time = mediaPlayer.getTime();
+        time = time - 100;
+        mediaPlayer.setTime(time);
+    }
+    
+    public void executeFastForward()
+    {
+        mediaPlayer.nextFrame();
     }
     
     public void executePause()
@@ -64,6 +82,13 @@ public class VideoView {
     public void executeStop()
     {
         mediaPlayer.stop();
+    }
+    
+    public void setNewPosition(int percentComplete)
+    {
+        float newPosition = (float) (percentComplete / 100.0);
+        System.out.println(newPosition);
+        mediaPlayer.setPosition(newPosition);
     }
     
     public long getTimestamp()
