@@ -1,5 +1,13 @@
 package modeling.and.analysis.tool;
 
+import au.com.bytecode.opencsv.CSVReader;
+import edu.asu.mgb.gui.GUIUtil;
+import edu.asu.mgb.problem.Action;
+import edu.asu.mgb.problem.Problem;
+import edu.asu.mgb.problem.ProblemManager;
+import edu.asu.mgb.problem.State;
+import edu.uci.ics.jung.graph.Graph;
+import edu.uci.ics.jung.visualization.VisualizationViewer;
 import modeling.and.analysis.tool.VideoView;
 import javax.swing.table.DefaultTableModel;
 import java.awt.BorderLayout;
@@ -8,15 +16,19 @@ import java.awt.event.ActionListener;
 import javax.swing.JFileChooser;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.Timer;
 import javax.swing.JFrame;
-import javax.swing.JTable;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 
@@ -62,6 +74,14 @@ public class MATMain extends javax.swing.JFrame {
     int lastRowEditedIndex = -1;
     String lastTimestampEdited = "";
     reversableActions lastAction = reversableActions.none;
+    // graph state information
+    private Integer problemNum = 3;
+    private Integer studentNum = 3;
+    private static final ProblemManager manager;
+    static {
+        manager = new ProblemManager();
+    }
+    private static final String FILE = "logs.csv";
     
     
     public MATMain() {
@@ -77,7 +97,7 @@ public class MATMain extends javax.swing.JFrame {
             System.out.println("No existing VLC path");
         }
         
-        //set up periodic GUI updates
+        //set up periodic Log/Video GUI updates
          playTimer = new Timer(500, new ActionListener() {
          @Override
          public void actionPerformed(ActionEvent evt) {
@@ -103,6 +123,36 @@ public class MATMain extends javax.swing.JFrame {
              }
              }
         });
+         
+         //populate graph panel
+         try {           
+            // Reading CSV file into memory
+            CSVReader reader = new CSVReader(new FileReader(FILE));
+            String[] nextLine;
+            String action;
+            
+            // Iterating over each value in the file
+            while ((nextLine = reader.readNext()) != null) {
+                // nextLine[] is an array of values from the line
+                action = nextLine[0];
+                manager.handleAction(action);
+            }
+            
+            // Setting the graphs
+            setCombinedGraph();
+            setIndividualGraph();
+            
+            // Setting comboboxes
+            this.jcbProblems.setModel(new DefaultComboBoxModel(manager.getProblemsList()));
+            this.jcbStudents.setModel(new DefaultComboBoxModel(manager.getStudentsList()));
+            
+        } catch (FileNotFoundException ex) {
+            System.out.println("Error");
+            //Logger.getLogger(GUIApplication.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            System.out.println("Error");
+            //Logger.getLogger(GUIApplication.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     private boolean compareVideoToLog()
@@ -131,27 +181,31 @@ public class MATMain extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        panel1 = new java.awt.Panel();
         jScrollPane2 = new javax.swing.JScrollPane();
         logTable = new javax.swing.JTable();
+        graphPanel = new javax.swing.JPanel();
+        jSplitPane1 = new javax.swing.JSplitPane();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jcbProblems = new javax.swing.JComboBox();
+        allProblemsPanel = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jcbStudents = new javax.swing.JComboBox();
+        studentPanel = new javax.swing.JPanel();
         logAddActionButton = new javax.swing.JButton();
         logSetTimestampButton = new javax.swing.JButton();
         logSyncButton = new javax.swing.JButton();
         logDeleteActionButton = new javax.swing.JButton();
         loadLogButton = new javax.swing.JButton();
         loadVideoButton = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
         videoPanel = new javax.swing.JPanel();
         vidStopButton = new javax.swing.JToggleButton();
         vidPauseButton = new javax.swing.JToggleButton();
         vidPlayButton = new javax.swing.JToggleButton();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jToggleButton1 = new javax.swing.JToggleButton();
-        jToggleButton2 = new javax.swing.JToggleButton();
-        jToggleButton3 = new javax.swing.JToggleButton();
-        jToggleButton4 = new javax.swing.JToggleButton();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
         jProgressBar1 = new javax.swing.JProgressBar();
         jButton3 = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
@@ -170,21 +224,7 @@ public class MATMain extends javax.swing.JFrame {
         aboutMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1024, 768));
-
-        panel1.setName("graphPanel"); // NOI18N
-        panel1.setPreferredSize(new java.awt.Dimension(350, 250));
-
-        javax.swing.GroupLayout panel1Layout = new javax.swing.GroupLayout(panel1);
-        panel1.setLayout(panel1Layout);
-        panel1Layout.setHorizontalGroup(
-            panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 350, Short.MAX_VALUE)
-        );
-        panel1Layout.setVerticalGroup(
-            panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 250, Short.MAX_VALUE)
-        );
+        setPreferredSize(new java.awt.Dimension(1300, 900));
 
         logTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -217,6 +257,131 @@ public class MATMain extends javax.swing.JFrame {
             logTable.getColumnModel().getColumn(0).setResizable(false);
             logTable.getColumnModel().getColumn(1).setResizable(false);
         }
+
+        jSplitPane1.setDividerLocation(450);
+        jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+
+        jLabel1.setText("Problem");
+
+        jcbProblems.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jcbProblems.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbProblemsActionPerformed(evt);
+            }
+        });
+
+        allProblemsPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        javax.swing.GroupLayout allProblemsPanelLayout = new javax.swing.GroupLayout(allProblemsPanel);
+        allProblemsPanel.setLayout(allProblemsPanelLayout);
+        allProblemsPanelLayout.setHorizontalGroup(
+            allProblemsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        allProblemsPanelLayout.setVerticalGroup(
+            allProblemsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 392, Short.MAX_VALUE)
+        );
+
+        jLabel3.setText("Click on the graph and press \"T\" to pan. Press \"P\" to get information from the graph.");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(allProblemsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jcbProblems, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 97, Short.MAX_VALUE)
+                        .addComponent(jLabel3)))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jcbProblems, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(allProblemsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jSplitPane1.setLeftComponent(jPanel1);
+
+        jLabel2.setText("Student");
+
+        jcbStudents.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jcbStudents.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbStudentsActionPerformed(evt);
+            }
+        });
+
+        studentPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        javax.swing.GroupLayout studentPanelLayout = new javax.swing.GroupLayout(studentPanel);
+        studentPanel.setLayout(studentPanelLayout);
+        studentPanelLayout.setHorizontalGroup(
+            studentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        studentPanelLayout.setVerticalGroup(
+            studentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 554, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jcbStudents, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 585, Short.MAX_VALUE))
+                    .addComponent(studentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jcbStudents, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(studentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jSplitPane1.setRightComponent(jPanel2);
+
+        javax.swing.GroupLayout graphPanelLayout = new javax.swing.GroupLayout(graphPanel);
+        graphPanel.setLayout(graphPanelLayout);
+        graphPanelLayout.setHorizontalGroup(
+            graphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(graphPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 724, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        graphPanelLayout.setVerticalGroup(
+            graphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(graphPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jSplitPane1)
+                .addContainerGap())
+        );
 
         logAddActionButton.setText("+ Add new action");
         logAddActionButton.setPreferredSize(new java.awt.Dimension(130, 25));
@@ -260,9 +425,6 @@ public class MATMain extends javax.swing.JFrame {
             }
         });
 
-        jButton7.setText("Generate graph from logs");
-        jButton7.setEnabled(false);
-
         videoPanel.setBackground(new java.awt.Color(0, 0, 0));
 
         javax.swing.GroupLayout videoPanelLayout = new javax.swing.GroupLayout(videoPanel);
@@ -273,7 +435,7 @@ public class MATMain extends javax.swing.JFrame {
         );
         videoPanelLayout.setVerticalGroup(
             videoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 244, Short.MAX_VALUE)
+            .addGap(0, 705, Short.MAX_VALUE)
         );
 
         vidStopButton.setText("■");
@@ -317,14 +479,6 @@ public class MATMain extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-
-        jToggleButton1.setText("Affective filter");
-
-        jToggleButton2.setText("Embodied filter");
-
-        jToggleButton3.setText("Affective Filter");
-
-        jToggleButton4.setText("Embodied Filter");
 
         jProgressBar1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -428,52 +582,39 @@ public class MATMain extends javax.swing.JFrame {
                         .addComponent(vidPlayButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)
                     .addComponent(videoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addComponent(loadLogButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(logSyncButton, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addComponent(logAddActionButton, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(logDeleteActionButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(logSetTimestampButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addGap(2, 2, 2)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jToggleButton3)
+                        .addComponent(loadLogButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jToggleButton4))
-                    .addComponent(jButton7)
-                    .addComponent(panel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(logSyncButton, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jToggleButton1)
+                        .addComponent(logAddActionButton, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jToggleButton2))
-                    .addComponent(jTabbedPane1))
+                        .addComponent(logDeleteActionButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(logSetTimestampButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addComponent(graphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(loadVideoButton)
-                    .addComponent(jButton7)
-                    .addComponent(jButton1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(videoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(loadVideoButton)
+                            .addComponent(jButton1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(videoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
                         .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -493,18 +634,7 @@ public class MATMain extends javax.swing.JFrame {
                             .addComponent(logSetTimestampButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(logDeleteActionButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton3)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(panel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jToggleButton1)
-                            .addComponent(jToggleButton2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTabbedPane1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jToggleButton3)
-                            .addComponent(jToggleButton4))))
+                    .addComponent(graphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -786,6 +916,58 @@ public class MATMain extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void jcbProblemsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbProblemsActionPerformed
+        JComboBox box = (JComboBox)evt.getSource();
+        this.problemNum = (Integer)box.getSelectedItem();
+
+        setCombinedGraph();
+        setIndividualGraph();
+    }//GEN-LAST:event_jcbProblemsActionPerformed
+
+    private void jcbStudentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbStudentsActionPerformed
+        JComboBox box = (JComboBox)evt.getSource();
+        this.studentNum = (Integer)box.getSelectedItem();
+
+        setIndividualGraph();
+    }//GEN-LAST:event_jcbStudentsActionPerformed
+
+    // graph GUI methods
+    public final void setCombinedGraph(){
+        // Selecting a problem and obtaining its graph
+        Problem p = manager.getProblem(this.problemNum);
+        Graph g = p.getGraph();
+            
+        // Getting visualization server for all students
+        VisualizationViewer<State, Action> vvAll = GUIUtil.getGraphVisualizationViewer(
+                g, 
+                this.allProblemsPanel.getWidth(), 
+                this.allProblemsPanel.getHeight()
+        );
+        
+        setGraph(vvAll, this.allProblemsPanel);
+    }
+    
+    public final void setIndividualGraph(){
+        // Selecting a problem and obtaining its graph
+        Problem p = manager.getProblem(this.problemNum);
+        Graph g = p.getGraph();
+        
+        // Getting visualization server for one student
+        VisualizationViewer<State, Action> vvStudent = GUIUtil.getGraphVisualizationViewerByStudent(
+                g, 
+                this.studentNum, 
+                this.studentPanel.getWidth(), 
+                this.studentPanel.getHeight()
+        );
+        
+        setGraph(vvStudent, this.studentPanel);
+    }
+    
+    public final void setGraph(VisualizationViewer vv, JPanel panel){
+        panel.removeAll();
+        panel.add(vv);
+    }
+    
     private void changeVideoSpeed(videoSpeeds speed)
     {
         if(speed == videoSpeeds.fastForward)
@@ -835,10 +1017,14 @@ public class MATMain extends javax.swing.JFrame {
                 new MATMain().setVisible(true);  
             }
         });
+        
+        /* Add graph elements to form */
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
+    private javax.swing.JPanel allProblemsPanel;
     private javax.swing.JMenuItem contentsMenuItem;
     private javax.swing.JMenuItem copyMenuItem;
     private javax.swing.JMenuItem cutMenuItem;
@@ -846,18 +1032,21 @@ public class MATMain extends javax.swing.JFrame {
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
+    private javax.swing.JPanel graphPanel;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton7;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JToggleButton jToggleButton1;
-    private javax.swing.JToggleButton jToggleButton2;
-    private javax.swing.JToggleButton jToggleButton3;
-    private javax.swing.JToggleButton jToggleButton4;
+    private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JComboBox jcbProblems;
+    private javax.swing.JComboBox jcbStudents;
     private javax.swing.JButton loadLogButton;
     private javax.swing.JButton loadVideoButton;
     private javax.swing.JButton logAddActionButton;
@@ -867,10 +1056,10 @@ public class MATMain extends javax.swing.JFrame {
     private javax.swing.JTable logTable;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem openMenuItem;
-    private java.awt.Panel panel1;
     private javax.swing.JMenuItem pasteMenuItem;
     private javax.swing.JMenuItem saveAsMenuItem;
     private javax.swing.JMenuItem saveMenuItem;
+    private javax.swing.JPanel studentPanel;
     private javax.swing.JToggleButton vidPauseButton;
     private javax.swing.JToggleButton vidPlayButton;
     private javax.swing.JToggleButton vidStopButton;
