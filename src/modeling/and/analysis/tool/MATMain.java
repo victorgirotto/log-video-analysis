@@ -73,7 +73,7 @@ public class MATMain extends javax.swing.JFrame {
         deleteRow,
         setTimestamp
     }
-    Object lastRowEdited[] = new Object[2];
+    Object lastRowEdited[] = new Object[7];
     int lastRowEditedIndex = -1;
     String lastTimestampEdited = "";
     reversableActions lastAction = reversableActions.none;
