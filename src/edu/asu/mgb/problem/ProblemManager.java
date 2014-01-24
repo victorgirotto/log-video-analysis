@@ -59,7 +59,8 @@ public class ProblemManager {
         return problems.keySet().toArray(new Integer[problems.size()]);
     }
     
-    public void handleAction(String action){
+    public ActionParsedDTO handleAction(String action){
+        ActionParsedDTO dto = null;
         Problem newCurrentProblem;
         int problemNumber;
         int studentNumber;
@@ -87,9 +88,14 @@ public class ProblemManager {
                 this.currentProblem = newCurrentProblem;
             } else if(currentProblem != null) {
                 // Sending action to be handled by the problem (it will change the its state)
-                currentProblem.handleAction(action);
+                dto = currentProblem.handleAction(action);
+                // Setting student number. Problem number was set in handleAction
+                if(dto != null){
+                    dto.setStudent(currentStudent);
+                }
             }
         }
+        return dto;
     }
     
 }

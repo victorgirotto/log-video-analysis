@@ -21,6 +21,7 @@ public class Action {
     private int count;
     private Problem p;
     private HashSet<Integer> students;
+    private boolean highlighted;
 
     public Action(String action, State origin, State destination, Problem p, Integer student) {
         this.action = action;
@@ -84,4 +85,13 @@ public class Action {
     public float getNormalizedCount(){
         return (float)this.count / this.p.getMaxAction();
     }
+
+    public boolean isHighlighted() {
+        return highlighted;
+    }
+
+    public void setHighlighted(boolean highlighted) {
+        this.highlighted = highlighted;
+    }
+   
 }

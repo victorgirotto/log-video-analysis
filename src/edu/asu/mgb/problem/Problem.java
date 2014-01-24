@@ -34,6 +34,7 @@ public class Problem {
     private static final String SOLUTION_INCORRECT = "Incorrect";
     private static final String SOLUTION_SEPARATOR = "is ";
     private static final String REFRESH = "Refresh";
+    private static final String ACTION_SPLITTER = " ";
     
     public static final int INITIAL = -1;
     public static final int CORRECT = -2;
@@ -54,23 +55,24 @@ public class Problem {
         this.graph.addVertex(this.current);
     }
     
-    void handleAction(String action){
+    public ActionParsedDTO handleAction(String action){
         String[] actionParam;
+        ActionParsedDTO dto = null;
         if(action.startsWith(MAKE_COMMAND)){
             // Separating action and parameters
             action = action.replace(MAKE_COMMAND, "").trim();
-            actionParam = action.split(" ");
+            actionParam = action.split(ACTION_SPLITTER);
             switch(actionParam[0]){
                 case MOVE:{
                     // State changes. Move n units
                     float distance = Util.getMoveUnits(actionParam[1]);
-                    move(action, distance);
+                    dto = move(action, distance);
                     break;
                 }
                 case TURN:{
                     // State changes. Turn n degrees
                     float angle = Util.getTurnUnits(actionParam[1]);
-                    turn(action, actionParam[1], angle);
+                    dto = turn(action, actionParam[1], angle);
                     break;
                 }
             }
@@ -78,26 +80,32 @@ public class Problem {
             actionParam = action.split(SOLUTION_SEPARATOR);
             switch(actionParam[1]){
                 case SOLUTION_CORRECT:
-                    current.setAsCorrectAnswer();
+                    current.setAsCorrectAnswer(manager.getCurrentStudent());
                     break;
                 case SOLUTION_INCORRECT:
-                    current.setAsIncorrectAnswer();
+                    current.setAsIncorrectAnswer(manager.getCurrentStudent());
                     break;
             }
         } else if (action.startsWith(REFRESH)){
             goBackToOrigin();
         }
+        // Setting the problem number
+        if(dto != null){
+            dto.setProblem(number);
+        }
+        return dto;
     }
     
-    private void move(String actionString, float units){
-        doAction(actionString, current.move(units, manager.getCurrentStudent()));
+    private ActionParsedDTO move(String actionString, float units){
+        return doAction(actionString, current.move(units, manager.getCurrentStudent()));
     }
     
-    private void turn(String actionString, String original, float units){
-        doAction(actionString, current.turn(original, units, manager.getCurrentStudent()));
+    private ActionParsedDTO turn(String actionString, String original, float units){
+        return doAction(actionString, current.turn(original, units, manager.getCurrentStudent()));
     }
     
-    private void doAction(String actionString, State newState){
+    private ActionParsedDTO doAction(String actionString, State newState){
+        ActionParsedDTO dto = new ActionParsedDTO(current);
         State newCurrent = states.get(newState.toString());
         // See if state exists
         if(newCurrent != null){
@@ -109,16 +117,18 @@ public class Problem {
             // Add to states hashmap
             states.put(newCurrent.toString(), newCurrent);
         }
+        dto.setFinalState(newCurrent);
         // Add connection to graph and set the new current
-        addEdge(actionString, current, newCurrent);
+        dto.setAction(addEdge(actionString, current, newCurrent));
         this.current = newCurrent;
         // Update max count
         if(!this.current.isInitialState() && this.current.getCount() > this.maxState){
             this.maxState = this.current.getCount();
         }
+        return dto;
     } 
     
-    public void addEdge(String action, State s1, State s2){
+    public Action addEdge(String action, State s1, State s2){
         Action edge = new Action(action, s1, s2, this, manager.getCurrentStudent());
         Action retrieved = actions.get(edge.hashCode());
         if(retrieved != null){
@@ -131,6 +141,7 @@ public class Problem {
         if(retrieved.getCount() > maxAction){
             maxAction = retrieved.getCount();
         }
+        return retrieved;
         
     }
 

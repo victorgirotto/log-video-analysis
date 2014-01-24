@@ -21,35 +21,38 @@ import javax.swing.table.DefaultTableModel;
  */
 public class FileWriter {
   
-    public boolean writeToCSV(int rows, int columns, DefaultTableModel data, File outputFile) throws FileNotFoundException, IOException
+    public boolean writeToCSV(int rows, int columns, DefaultTableModel data, String dateString, File outputFile) throws FileNotFoundException, IOException
     {
         boolean success = true;
         String newLine = "";
         FileOutputStream is = new FileOutputStream(outputFile);
         OutputStreamWriter osw = new OutputStreamWriter(is);    
-        Writer w = new BufferedWriter(osw);
-        
-        //save table to .csv file
-        for(int i=0; i<data.getRowCount(); i++)
-        {
-            for(int j=0; j<data.getColumnCount(); j++)
+        try (Writer w = new BufferedWriter(osw)) {
+            for(int i=0; i<data.getRowCount(); i++)
             {
-                if(j==data.getColumnCount()-1)
+                for(int j=0; j<data.getColumnCount(); j++)
                 {
-                    //don't add comma to last item on line
-                    newLine = newLine + data.getValueAt(i, j) + "\n";
+                    if(j==data.getColumnCount()-1)
+                    {
+                        //don't add comma to last item on line
+                        newLine = newLine + data.getValueAt(i, j) + "\n";
+                    }
+                    else if(j==1)
+                    {
+                        //insert extraneous timestamp info into log file
+                        newLine = newLine + data.getValueAt(i, j) + dateString + ",";
+                    }
+                    else
+                    {
+                        //format each row and write to output file
+                        newLine = newLine + data.getValueAt(i, j) + ",";
+                    }
                 }
-                else
-                {
-                    //format each row and write to output file
-                    newLine = newLine + data.getValueAt(i, j) + ",";
-                }
+                //write line to .csv file
+                w.write(newLine);
+                newLine = "";
             }
-            //write line to .csv file
-            w.write(newLine);            
-            newLine = "";
         }
-        w.close();
         
         return success;
     }

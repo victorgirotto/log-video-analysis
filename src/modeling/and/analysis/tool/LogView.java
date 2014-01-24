@@ -21,8 +21,10 @@ public class LogView {
     
     JTable logTable;
     DefaultTableModel logModel;
-    String[] columnNames = {"Action", "Timestamp"};
+    String[] columnNames = {"Action", "Timestamp", "Solution Cards", "Vertical Proximity", "Horizontal Proximity",
+        "Pre-Click Movement", "Post-Click Movement"};
     String startTime;
+    String logDate = "";
     
     public LogView(File file, String path) throws FileNotFoundException
     {
@@ -39,13 +41,35 @@ public class LogView {
         }
         
         //create an array to store log data based on file size
-        Object[][] logData = new Object[length][2];
+        Object[][] logData = new Object[length][7];
         
         //read in log data from .csv file
         Scanner logScanner = new Scanner(file);
         while(logScanner.hasNextLine()) {
             line = logScanner.nextLine();
             logData[x] = line.split(","); 
+                        
+            //set date info
+            if(logDate.equals(""))
+            {
+                String tempStr = (String) logData[x][1];
+                logDate = tempStr.substring(tempStr.indexOf('h'));
+            }
+            
+           //replace null values with empty strings
+            try{
+            for(int i=0; i<7; i++)
+            {
+                if(logData[x][i]==null)
+                {
+                    logData[x][i] = "";
+                }
+            }
+            } catch (Exception e)
+            {
+                System.out.println(logData);
+            }
+            
             //remove extraneous timestamp info
             try {
             logData[x][1] = logData[x][1].toString().substring(0, logData[x][1].toString().indexOf('h'));
@@ -67,6 +91,11 @@ public class LogView {
     public String getStartTime()
     {
         return startTime;
+    }
+    
+    public String getDateInfo()
+    {
+        return logDate;
     }
     
     public DefaultTableModel getTableModel()

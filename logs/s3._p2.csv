@@ -1,0 +1,28 @@
+start,13:31h - 9/5/2013, , , , , 
+Current problem index : 2 ,14:23h - 9/5/2013, , , , , 
+Refresh problem ,14:23h - 9/5/2013, , , , , 
+Click ,14:24h - 9/5/2013, , bent at waist, far, none, 
+Make command Turn S,14:24h - 9/5/2013, , , , , none
+Click ,14:25h - 9/5/2013, , bent at waist, close, none, 
+Make command Move 2,14:25h - 9/5/2013, , , , , step N away from robot
+Click ,14:26h - 9/5/2013, , bent at waist, far, none, 
+Make command Turn N,14:29h - 9/5/2013, long, , , , step to SW corner
+Click ,14:30h - 9/5/2013, , bent at waist, far, none, 
+Make command Move 1,14:30h - 9/5/2013, , , , , step back to SW corner
+Click ,14:30h - 9/5/2013, , bent at waist, far, none, 
+Make command Move 1,14:31h - 9/5/2013, , , , , none
+Click ,14:31h - 9/5/2013, , bent at waist, far, none, 
+Make command Turn W,14:31h - 9/5/2013, , , , , step back to SW corner
+Click ,14:32h - 9/5/2013, , bent at waist, close, move N to stand above robot, 
+Make command Move 2,14:33h - 9/5/2013, long, , , , pointing gesture
+Click ,14:33h - 9/5/2013, , bent at waist, close, move N to stand above robot, 
+Make command Turn S,14:33h - 9/5/2013, , , , , none
+Click ,14:34h - 9/5/2013, , bent at waist, far, none, 
+Make command Move 3,14:34h - 9/5/2013, , , , , none
+Click ,14:35h - 9/5/2013, , bent at waist, far, none, 
+Make command Plot point,14:35h - 9/5/2013, , , , , none
+Checking the solution ,14:35h - 9/5/2013, , , , , 
+Click ,14:35h - 9/5/2013, , , , , 
+Solution is Correct ,14:35h - 9/5/2013, , , , , 
+Checked emotions are Happy. ,14:36h - 9/5/2013, , , , , 
+Moving to next problem ,14:36h - 9/5/2013, , , , , 

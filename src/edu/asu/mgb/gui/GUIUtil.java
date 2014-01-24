@@ -7,7 +7,6 @@
 package edu.asu.mgb.gui;
 
 import edu.asu.mgb.problem.Action;
-import edu.asu.mgb.problem.Problem;
 import edu.asu.mgb.problem.State;
 import edu.uci.ics.jung.algorithms.filters.EdgePredicateFilter;
 import edu.uci.ics.jung.algorithms.filters.VertexPredicateFilter;
@@ -20,12 +19,10 @@ import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 import edu.uci.ics.jung.visualization.picking.PickedState;
 import edu.uci.ics.jung.visualization.renderers.Renderer;
 import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.Stroke;
-import java.awt.geom.Ellipse2D;
 import org.apache.commons.collections15.Predicate;
 import org.apache.commons.collections15.Transformer;
 
@@ -35,7 +32,6 @@ import org.apache.commons.collections15.Transformer;
  */
 public class GUIUtil {
     
-    private static final Integer MAX_VERTEX_SIZE = 50;
     private static final Integer PADDING = 0;
     
     /**
@@ -67,62 +63,6 @@ public class GUIUtil {
     }
 
     /**
-     * Obtains the stroke transformer
-     * @return 
-     */
-    public static Transformer<Action, Stroke> getEdgeStrokeTransformer() {
-        return new Transformer<Action, Stroke>() {
-            final float dash[] = {1.0f};
-            
-            @Override
-            public Stroke transform(Action s) {
-                return new BasicStroke(1.0f + ((float)10.0 * s.getNormalizedCount()), BasicStroke.CAP_BUTT,BasicStroke.JOIN_MITER, 
-                                       10.0f, dash, 0.0f);
-            }
-        };
-    }
-
-    /**
-     * Obtains the vertex size transformer
-     * @return 
-     */
-    public static Transformer<State, Shape> getVertexSizeTransformer() {
-        return new Transformer<State,Shape>(){
-            @Override
-            public Shape transform(State state){
-                if(state.isInitialState()){
-                    return new Ellipse2D.Double(MAX_VERTEX_SIZE/-2, MAX_VERTEX_SIZE/-2, MAX_VERTEX_SIZE, MAX_VERTEX_SIZE);
-                }
-                float size = (MAX_VERTEX_SIZE/2) + ((MAX_VERTEX_SIZE/2) * state.getRawNormalizedIntensity());
-                return new Ellipse2D.Double(size / -2, size / -2, size, size);
-//                return new Ellipse2D.Double(-30, -30, 60, 60);
-            }
-        };
-    }
-
-    /**
-     * Obtains the vertex paint (color) transformer
-     * @return 
-     */
-    public static Transformer<State, Paint> getVertexPaintTransformer() {
-        return new Transformer<State,Paint>() {
-            @Override
-            public Paint transform(State state) {
-                float intensity = state.getNormalizedIntensity();
-                if(intensity == Problem.INITIAL){
-                    // Initial position
-                    return Color.BLUE;    
-                } else if(intensity == Problem.CORRECT) {
-                    return Color.GREEN;
-                } else if(intensity == Problem.INCORRECT) {
-                    return Color.RED;
-                } else {
-                    return Color.LIGHT_GRAY;
-                }
-        } };
-    }
-
-    /**
      * Obtain the graph layout
      * @param g
      * @return 
@@ -143,15 +83,20 @@ public class GUIUtil {
         // Executing filter
         studentGraph = vertexFilter.transform(g);
         studentGraph = edgeFilter.transform(studentGraph);
-        return getGraphVisualizationViewer(studentGraph, width, height);
+        return getGraphVisualizationViewer(studentGraph, width, height, new IndividualTransformer(student));
     }
     
-    public static VisualizationViewer getGraphVisualizationViewer(Graph g, int width, int height){
+    public static VisualizationViewer getGraphVisualizationViewer(Graph g, int width, int height, GUITransformer t){
+        if(t == null){
+            t = new AggregateTransformer();
+        }
+
         // Getting transformers for line
-        Transformer<Action, Stroke> edgeStrokeTransformer = GUIUtil.getEdgeStrokeTransformer();
+        Transformer<Action, Stroke> edgeStrokeTransformer = t.getEdgeStrokeTransformer();
         // Getting transformers for edges
-        Transformer<State,Shape> vertexSize = GUIUtil.getVertexSizeTransformer();
-        Transformer<State,Paint> vertexPaint = GUIUtil.getVertexPaintTransformer();
+        Transformer<State,Shape> vertexSize = t.getVertexSizeTransformer();
+        Transformer<State,Paint> vertexPaint = t.getVertexPaintTransformer();
+        Transformer<State,Stroke> vertexStroke = t.getVertexStrokeTransformer();
         
         // Setting layout
         Layout<State, Action> layout = GUIUtil.getLayout(g);
@@ -166,6 +111,7 @@ public class GUIUtil {
         vv.getRenderContext().setEdgeStrokeTransformer(edgeStrokeTransformer);
         vv.getRenderContext().setVertexFillPaintTransformer(vertexPaint);
         vv.getRenderContext().setVertexShapeTransformer(vertexSize);
+        vv.getRenderContext().setVertexStrokeTransformer(vertexStroke);
         vv.getRenderer().getVertexLabelRenderer().setPosition(Renderer.VertexLabel.Position.CNTR);
         
         // Mouse operations

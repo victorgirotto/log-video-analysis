@@ -1,0 +1,40 @@
+start ,10:45h - 9/6/2013, , , , , 
+Current problem index : 2 ,11:16h - 9/6/2013, , , , , 
+Refresh problem ,11:16h - 9/6/2013, , , , , 
+Replaying all steps ,11:16h - 9/6/2013, , , , , 
+Click ,11:17h - 9/6/2013, long, bent at waist, close, none, 
+Make command Turn W,11:17h - 9/6/2013, , , , , none
+Click ,11:18h - 9/6/2013, long, bent at waist, close, none, 
+Make command Move 2,11:18h - 9/6/2013, , , , , turned and stepped back to watch robot
+Click ,11:18h - 9/6/2013, long, bent at waist, close, none, 
+Make command Turn S,11:19h - 9/6/2013, , , , , none
+Checking the solution ,10:20h - 9/6/2013, , , , , 
+Click ,11:19h - 9/6/2013, long, bent at waist, close, none, 
+Make command Plot point,11:19h - 9/6/2013, , , , , none
+Checking the solution ,11:19h - 9/6/2013, , , , , 
+Click ,11:19h - 9/6/2013, ,, , , 
+Solution is Incorrect ,11:19h - 9/6/2013, , , , , 
+Checked emotions are Ashamed. ,11:19h - 9/6/2013, , , , , 
+Click ,11:20h - 9/6/2013, long, bent at waist, close, none, 
+Make command Move 3,11:20h - 9/6/2013, , , , , none
+Click ,11:21h - 9/6/2013, long, bent at waist, far, move around to E side of robot, 
+Make command Plot point,11:21h - 9/6/2013, , , , , step N back away from robot
+Checking the solution ,11:21h - 9/6/2013, , , , , 
+Replaying all steps ,11:21h - 9/6/2013, , , , , 
+Refresh problem ,11:21h - 9/6/2013, , , , , 
+Replaying all steps ,11:21h - 9/6/2013, , , , , 
+Click ,11:22h - 9/6/2013, long, bent at waist, close, none, 
+Make command Turn W,11:22h - 9/6/2013, , , , , none
+Click ,11:22h - 9/6/2013, long, bent at waist, close, none, 
+Make command Move 2,11:22h - 9/6/2013, , , , , step closer to robot
+Click ,11:23h - 9/6/2013, long, bent at waist, close, none,
+Make command Turn S,11:23h - 9/6/2013, , , , , step N back away from robot
+Click ,11:23h - 9/6/2013, long, bent at waist, close, none, 
+Make command Move 3,11:23h - 9/6/2013, , , , , none
+Click ,11:24h - 9/6/2013, long, bent at waist, far, none, 
+Make command Plot point,11:24h - 9/6/2013, , , , , step back away from robot
+Checking the solution ,11:24h - 9/6/2013, , , , , 
+Click ,11:24h - 9/6/2013, , , , , 
+Solution is Correct ,11:24h - 9/6/2013, , , , , 
+Checked emotions are Grateful. ,11:25h - 9/6/2013, , , , , 
+Moving to next problem ,11:25h - 9/6/2013, , , , , 
