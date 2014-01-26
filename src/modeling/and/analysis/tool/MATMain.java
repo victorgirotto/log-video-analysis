@@ -91,6 +91,9 @@ public class MATMain extends javax.swing.JFrame {
     }
     private static final String FILE = "logs.csv";
     
+    private VisualizationViewer<State, Action> vvStudent;
+    private VisualizationViewer<State, Action> vvAll;
+    
     
     public MATMain() {
         initComponents();
@@ -229,6 +232,7 @@ public class MATMain extends javax.swing.JFrame {
         jcbProblems = new javax.swing.JComboBox();
         allProblemsPanel = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
+        jCheckBox1 = new javax.swing.JCheckBox();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jcbStudents = new javax.swing.JComboBox();
@@ -312,10 +316,10 @@ public class MATMain extends javax.swing.JFrame {
             }
         });
         vidProgressBar.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+            }
             public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
                 vidProgressBarCaretPositionChanged(evt);
-            }
-            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
 
@@ -421,6 +425,14 @@ public class MATMain extends javax.swing.JFrame {
 
         jLabel3.setText("Click on the graph and press \"T\" to pan. Press \"P\" to get information from the graph.");
 
+        jCheckBox1.setSelected(true);
+        jCheckBox1.setText("Labels");
+        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -433,7 +445,9 @@ public class MATMain extends javax.swing.JFrame {
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jcbProblems, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 149, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jCheckBox1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
                         .addComponent(jLabel3)))
                 .addContainerGap())
         );
@@ -444,7 +458,8 @@ public class MATMain extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jcbProblems, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
+                    .addComponent(jLabel3)
+                    .addComponent(jCheckBox1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(allProblemsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -485,7 +500,7 @@ public class MATMain extends javax.swing.JFrame {
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jcbStudents, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 637, Short.MAX_VALUE))
+                        .addGap(0, 648, Short.MAX_VALUE))
                     .addComponent(studentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -622,7 +637,7 @@ public class MATMain extends javax.swing.JFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(logSetTimestampButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(logUndoButton, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE))
+                                        .addComponent(logUndoButton, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE))
                                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                         .addComponent(logLoadButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1013,6 +1028,25 @@ public class MATMain extends javax.swing.JFrame {
         
     }//GEN-LAST:event_logJumpToActionButtonActionPerformed
 
+    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
+        setLabelTransformer(vvAll);
+        setLabelTransformer(vvStudent);
+    }//GEN-LAST:event_jCheckBox1ActionPerformed
+
+    private void setLabelTransformer(VisualizationViewer vv){
+        boolean isSelected = jCheckBox1.isSelected();
+        if(isSelected){
+            // Display labels
+            vv.getRenderContext().setEdgeLabelTransformer(GUIUtil.stringLabelTransformer);
+            vv.getRenderContext().setVertexLabelTransformer(GUIUtil.stringLabelTransformer);
+        } else {
+            // Hide labels
+            vv.getRenderContext().setEdgeLabelTransformer(GUIUtil.defaultLabelTransformer);
+            vv.getRenderContext().setVertexLabelTransformer(GUIUtil.defaultLabelTransformer);  
+        }
+        vv.repaint();
+    }
+    
     private void logTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logTableMouseClicked
         selectedRowIndex = logTable.getSelectedRow();
     }//GEN-LAST:event_logTableMouseClicked
@@ -1024,7 +1058,7 @@ public class MATMain extends javax.swing.JFrame {
         Graph g = p.getGraph();
             
         // Getting visualization server for all students
-        VisualizationViewer<State, Action> vvAll = GUIUtil.getGraphVisualizationViewer(
+        this.vvAll = GUIUtil.getGraphVisualizationViewer(
                 g, 
                 this.allProblemsPanel.getWidth(), 
                 this.allProblemsPanel.getHeight(),
@@ -1032,6 +1066,7 @@ public class MATMain extends javax.swing.JFrame {
         );
         
         setGraph(vvAll, this.allProblemsPanel);
+        setLabelTransformer(vvAll);
     }
     
     public final void setIndividualGraph(){
@@ -1040,7 +1075,7 @@ public class MATMain extends javax.swing.JFrame {
         Graph g = p.getGraph();
         
         // Getting visualization server for one student
-        VisualizationViewer<State, Action> vvStudent = GUIUtil.getGraphVisualizationViewerByStudent(
+        this.vvStudent = GUIUtil.getGraphVisualizationViewerByStudent(
                 g, 
                 this.studentNum, 
                 this.studentPanel.getWidth(), 
@@ -1048,6 +1083,7 @@ public class MATMain extends javax.swing.JFrame {
         );
         
         setGraph(vvStudent, this.studentPanel);
+        setLabelTransformer(vvStudent);
     }
     
     public final void setGraph(VisualizationViewer vv, JPanel panel){
@@ -1122,6 +1158,7 @@ public class MATMain extends javax.swing.JFrame {
     private javax.swing.JMenu fileMenu;
     private javax.swing.JPanel graphPanel;
     private javax.swing.JMenu helpMenu;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

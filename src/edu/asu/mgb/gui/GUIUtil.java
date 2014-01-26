@@ -18,7 +18,6 @@ import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 import edu.uci.ics.jung.visualization.picking.PickedState;
 import edu.uci.ics.jung.visualization.renderers.Renderer;
-import java.awt.BasicStroke;
 import java.awt.Dimension;
 import java.awt.Paint;
 import java.awt.Shape;
@@ -34,6 +33,19 @@ public class GUIUtil {
     
     private static final Integer PADDING = 0;
     
+    public static Transformer defaultLabelTransformer;
+    public static Transformer stringLabelTransformer;
+    
+    static {
+        defaultLabelTransformer = new Transformer() {
+            @Override
+            public String transform(Object i) {
+                return "";
+            }
+        };
+        
+        stringLabelTransformer = new ToStringLabeller();
+    }
     /**
      * Obtains the vertex filter by student;
      * @param student
