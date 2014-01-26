@@ -50,9 +50,8 @@ public class MATMain extends javax.swing.JFrame {
      */
     
     private static final JFileChooser ourFileSelector = new JFileChooser();
-    VideoView currentVideo;
-    LogView ourLog;
-    ArrayList<LogMessage> ourLogMessages;
+    //video variables
+    VideoView currentVideo;  
     String vlcPath;
     enum videoSpeeds {
         fastForward,
@@ -64,7 +63,10 @@ public class MATMain extends javax.swing.JFrame {
     long startTime;
     String strStartTime;
     String strStartTimeArray[];
+    //log variables
     int selectedRowIndex = 0;
+    ArrayList<LogMessage> ourLogMessages;
+    LogView ourLog;
     File ourLogFile;
     //undo variables
     enum reversableActions {
@@ -107,7 +109,7 @@ public class MATMain extends javax.swing.JFrame {
         }
         
         //set up periodic Log/Video GUI updates
-         playTimer = new Timer(500, new ActionListener() {
+         playTimer = new Timer(1000, new ActionListener() {
          @Override
          public void actionPerformed(ActionEvent evt) {
              try {
@@ -119,11 +121,12 @@ public class MATMain extends javax.swing.JFrame {
               
                 //highlight current video action in log view
                 boolean playingNextAction = compareVideoToLog();
-                if(playingNextAction)
+                while(playingNextAction)
                 {
                     selectedRowIndex++;
-                    logTable.setRowSelectionInterval(selectedRowIndex, selectedRowIndex);
                 }
+                logTable.setRowSelectionInterval(selectedRowIndex, selectedRowIndex);
+
                 
                 //highlight selected action on graph
                 currentEdge.setHighlighted(false);
@@ -334,6 +337,11 @@ public class MATMain extends javax.swing.JFrame {
             }
         ));
         logTable.setFillsViewportHeight(true);
+        logTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logTableMouseClicked(evt);
+            }
+        });
         logScrollPane.setViewportView(logTable);
 
         logLoadButton.setText("Load log file (.csv)");
@@ -901,6 +909,9 @@ public class MATMain extends javax.swing.JFrame {
     }//GEN-LAST:event_vidProgressBarCaretPositionChanged
 
     private void vidProgressBarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_vidProgressBarMouseClicked
+        int hour, minute;
+        String newTimestamp;
+        DefaultTableModel currentModel = (DefaultTableModel) logTable.getModel();
         //get the new position
         int mouseX = evt.getX();
         //Computes how far along the mouse is relative to the component width then multiply it by the progress bar's maximum value.
@@ -910,7 +921,21 @@ public class MATMain extends javax.swing.JFrame {
         currentVideo.setNewPosition(newPercentComplete);
         //update progress bar        
         vidProgressBar.setValue(newPercentComplete);
-
+        //update selected row in log table
+        int currentPosition = (int) (startTime + (currentVideo.getVideoLength() * newPercentComplete) / 100);
+        hour = currentPosition / 3600000;
+        minute = (currentPosition - (hour*3600000)) / 60000;
+        newTimestamp = hour + ":" + minute;
+        for(int row=0; row<currentModel.getRowCount(); row++)
+        {
+            if(currentModel.getValueAt(row, 1).equals(newTimestamp))
+            {
+                //set selected row
+                selectedRowIndex = row;
+                logTable.setRowSelectionInterval(selectedRowIndex, selectedRowIndex);
+            }
+        }
+        
     }//GEN-LAST:event_vidProgressBarMouseClicked
 
     private void logSaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logSaveButtonActionPerformed
@@ -980,13 +1005,17 @@ public class MATMain extends javax.swing.JFrame {
 
         //seek in video
         long totalVideoLength = currentVideo.getVideoLength();
-        int newPercentComplete = (int) (currentActionTime / totalVideoLength);
+        int newPercentComplete = (int) ((currentActionTime * 100) / totalVideoLength);
         currentVideo.setNewPosition(newPercentComplete);
         //update progress bar        
         vidProgressBar.setValue(newPercentComplete);
         
         
     }//GEN-LAST:event_logJumpToActionButtonActionPerformed
+
+    private void logTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logTableMouseClicked
+        selectedRowIndex = logTable.getSelectedRow();
+    }//GEN-LAST:event_logTableMouseClicked
 
     // graph GUI methods
      public final void setCombinedGraph(){
