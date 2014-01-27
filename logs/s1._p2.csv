@@ -1,44 +1,41 @@
-start,8:41h - 9/5/2013, , , , , 
-Current problem index : 2 ,9:36h - 9/5/2013, , , , , 
-Refresh problem ,9:36h - 9/5/2013, , , , , 
-Replaying all steps ,9:36h - 9/5/2013, , , , , 
-Click ,9:37h - 9/5/2013, , bent at  waist, close, none, 
-Make command Move 270,9:37h - 9/5/2013, , , , , none
-Click ,9:37h - 9/5/2013, , bent at waist, close, none, 
-Make command Turn 270,9:37h - 9/5/2013, , , , , small step back
-Click ,9:38h - 9/5/2013, , bent at waist, , , 
-Click ,9:38h - 9/5/2013, , bent at waist, close, none, 
-Make command Turn 90,9:38h - 9/5/2013, , , , , none
-Click ,9:38h - 9/5/2013, , bent at waist, close, none, 
-Make command Turn 175,9:38h - 9/5/2013, , , , , step east to rear of robot
-Click ,9:39h - 9/5/2013, , bent at waist, close, none, 
-Make command Move 3,9:39h - 9/5/2013, , , , , step west following robot
-Click ,9:39h - 9/5/2013, , bent at waist, close, step east to stand behind robot, 
-Make command Turn 90,9:40h - 9/5/2013, , , , , none
-Click ,9:40h - 9/5/2013, , bent at waist, close, step east to stand behind robot, 
-Make command Move 10,9:41h - 9/5/2013, , , , , step up to stand north of robot
-Click ,9:42h - 9/5/2013, , bent at waist, close, step back and forth waiting for robot to finish action, 
-Make command Move 3,9:42h - 9/5/2013, , , , , step back to watch robot
-Checking the solution ,9:42h - 9/5/2013, , , , step east watching robot, 
-Click ,9:42h - 9/5/2013, , , , , 
-Solution is Incorrect ,9:42h - 9/5/2013, , , , , 
-Checked emotions are Sad/Guilty/Ashamed/Frustrated. ,9:42h - 9/5/2013, , , , , 
-Click ,9:43h - 9/5/2013, ,  kneeling (touching floor), close, stepped towards robot to hear attribution, 
-Click ,9:43h - 9/5/2013, , kneeling (touching floor), close,  stepped towards robot to hear attribution, 
-Make command Turn 7,9:44h - 9/5/2013, , , , , scooted to north on knees
-Click ,9:44h - 9/5/2013, ,kneeling(touching floor), close, sat on mat north of robot, 
-Make command Plot point,9:45h - 9/5/2013, , , , , none
-Click ,9:45h - 9/5/2013, , kneeling (touching floor), close, none, 
-Make command Plot point,9:45h - 9/5/2013, , , , , 
-Click ,9:46h - 9/5/2013, , kneeling (touching floor), close, none, 
-Make command Turn W,9:47h - 9/5/2013, , , , , none
-Click ,9:48h - 9/5/2013, ,bent at waist, close, stand up and move east to back of roobot, 
-Make command Turn N,9:49h - 9/5/2013, , , , , move north to right of robot
-Click ,9:49h - 9/5/2013, , bent at waist, far, move east to origin, 
-Make command Move 1,9:50h - 9/5/2013, , , , , move north 
-Checking the solution ,9:50h - 9/5/2013, , , close, , 
-Click ,9:50h - 9/5/2013, , , , , 
-Solution is Incorrect ,9:50h - 9/5/2013, , , , , move to robot to read attribution
-Checked emotions are Sad/Guilty/Ashamed/Pitiful/Frustrated. ,9:50h - 9/5/2013, , , , , 
-Click ,9:51h - 9/5/2013, , bent at waist, close, , 
-Make command Turn 90,9:51h - 9/5/2013, , , , , move to north of robot
+start,8:41h - 9/5/2013,,	,	,	,	,
+Current problem index : 2 ,9:36h - 9/5/2013,,	,	,	,	,
+Refresh problem ,9:36h - 9/5/2013,,	,	,	,	,
+Replaying all steps ,9:36h - 9/5/2013,,	,	,	,	,
+Click ,9:37h - 9/5/2013,,	bent at waist,close,little/no movement,,
+Make command Move 270,9:37h - 9/5/2013,,	,	,	,	little/no movement
+Click ,9:37h - 9/5/2013,,	bent at waist,close,little/no movement,,
+Make command Turn 270,9:37h - 9/5/2013,	,	,	,	,purposeful movement
+Click,9:38h - 9/5/2013,	,bent at waist,close,little/no movement, , 
+Make command Turn 90,9:38h - 9/5/2013,,	,	,	,	little/no movement
+Click,9:38h - 9/5/2013, ,bent at waist,close,little/no movement, , 
+Make command Turn 175,9:38h - 9/5/2013,,	,	,	,	purposeful movement
+Click,9:39h - 9/5/2013,,	bent at waist,close,little/no movement,, 
+Make command Move 3,9:39h - 9/5/2013,,	,	,	,	purposeful movement
+Click,9:39h - 9/5/2013,,	bent at waist,close,purposeful movement,, 
+Make command Turn 90,9:40h - 9/5/2013,,	,	,	,	little/no movement
+Click,9:40h - 9/5/2013,,	bent at waist,close,purposeful movement,, 
+Make command Move 10,9:41h - 9/5/2013,,	,	,	,	purposeful movement
+Click,9:42h - 9/5/2013,,	bent at waist,close,purposeful movement,, 
+Make command Move 3,9:42h - 9/5/2013,,	,	,	,	purposeful movement
+Checking the solution,9:42h - 9/5/2013,,	,	,	purposeful movement,, 
+Solution is Incorrect,9:42h - 9/5/2013,,	,	,	,	,
+Checked emotions are Sad/Guilty/Ashamed/Frustrated.,9:42h - 9/5/2013,,	,	,	,	, 
+Click,9:43h - 9/5/2013,,	kneeling w/knees on floor,close,purposeful movement, 
+Make command Turn 7,9:44h - 9/5/2013,,	,	,	,	purposeful movement
+Click,9:44h - 9/5/2013,,	kneeling w/knees on floor,close,purposeful movement,, 
+Make command Plot point,9:45h - 9/5/2013,,	,	,	,	little/no movement
+Click,9:45h - 9/5/2013,,	kneeling w/knees on floor,close,little/no movement,, 
+Make command Plot point,9:45h - 9/5/2013,,	,	,	,	little/no movement
+Click,9:46h - 9/5/2013,	,kneeling w/knees on floor,close,little/no movement, 
+Make command Turn W,9:47h - 9/5/2013,,	,	,	,	little/no movement
+Click,9:48h - 9/5/2013,,	bent at waist,close,purposeful movement,, 
+Make command Turn N,9:49h - 9/5/2013,,	,	,	,	purposeful movement
+Click,9:49h - 9/5/2013,,	bent at waist,far,purposeful movement,, 
+Make command Move 1,9:50h - 9/5/2013,,	,	,	,	purposeful movement
+Checking the solution,9:50h - 9/5/2013,,	,	close,,	,
+Click,9:50h - 9/5/2013,,	,	,	,	,
+Solution is Incorrect,9:50h - 9/5/2013,,	,	,	,	purposeful movement
+Checked emotions are Sad/Guilty/Ashamed/Pitiful/Frustrated.,9:50h - 9/5/2013,,	,	,	,	,
+Click,9:51h - 9/5/2013,,	bent at waist,close,,	,
+Make command Turn 90,9:51h - 9/5/2013,,	,	,	,	purposeful movement
