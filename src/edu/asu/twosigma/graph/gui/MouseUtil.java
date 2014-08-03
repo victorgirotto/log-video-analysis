@@ -4,10 +4,10 @@
  * and open the template in the editor.
  */
 
-package edu.asu.mgb.gui;
+package edu.asu.twosigma.graph.gui;
 
-import edu.asu.mgb.problem.Action;
-import edu.asu.mgb.problem.State;
+import edu.asu.twosigma.graph.models.Action;
+import edu.asu.twosigma.graph.models.State;
 import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
 import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
 import edu.uci.ics.jung.visualization.picking.PickedState;

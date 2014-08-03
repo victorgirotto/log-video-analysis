@@ -4,7 +4,9 @@
  * and open the template in the editor.
  */
 
-package modeling.and.analysis.tool;
+package edu.asu.twosigma.tool.models;
+
+import edu.asu.twosigma.tool.*;
 
 /**
  *

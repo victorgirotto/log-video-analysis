@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package edu.asu.mgb.problem;
+package edu.asu.twosigma.graph.models;
 
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;

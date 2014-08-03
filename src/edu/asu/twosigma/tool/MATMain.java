@@ -1,13 +1,17 @@
-package modeling.and.analysis.tool;
+package edu.asu.twosigma.tool;
 
+import edu.asu.twosigma.tool.gui.VideoView;
+import edu.asu.twosigma.tool.gui.LogView;
+import edu.asu.twosigma.tool.util.FileWriter;
 import au.com.bytecode.opencsv.CSVReader;
-import edu.asu.mgb.coding.Coding;
-import edu.asu.mgb.gui.GUIUtil;
-import edu.asu.mgb.problem.Action;
-import edu.asu.mgb.problem.ActionParsedDTO;
-import edu.asu.mgb.problem.Problem;
-import edu.asu.mgb.problem.ProblemManager;
-import edu.asu.mgb.problem.State;
+import edu.asu.twosigma.graph.coding.Coding;
+import edu.asu.twosigma.graph.gui.GUIUtil;
+import edu.asu.twosigma.graph.problem.Action;
+import edu.asu.twosigma.graph.problem.ActionParsedDTO;
+import edu.asu.twosigma.graph.problem.Problem;
+import edu.asu.twosigma.graph.problem.ProblemManager;
+import edu.asu.twosigma.graph.problem.State;
+import edu.asu.twosigma.tool.models.LogMessage;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import javax.swing.table.DefaultTableModel;

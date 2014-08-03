@@ -4,10 +4,10 @@
  * and open the template in the editor.
  */
 
-package edu.asu.mgb.gui;
+package edu.asu.twosigma.graph.gui;
 
-import edu.asu.mgb.problem.Action;
-import edu.asu.mgb.problem.State;
+import edu.asu.twosigma.graph.models.Action;
+import edu.asu.twosigma.graph.models.State;
 import java.awt.BasicStroke;
 import java.awt.Paint;
 import java.awt.Shape;

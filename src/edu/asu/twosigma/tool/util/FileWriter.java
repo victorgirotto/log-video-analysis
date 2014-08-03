@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package modeling.and.analysis.tool;
+package edu.asu.twosigma.tool.util;
 
 import java.io.BufferedWriter;
 import java.io.File;

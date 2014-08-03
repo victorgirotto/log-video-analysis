@@ -4,9 +4,9 @@
  * and open the template in the editor.
  */
 
-package edu.asu.mgb.problem;
+package edu.asu.twosigma.graph.models;
 
-import edu.asu.mgb.coding.Coding;
+import edu.asu.twosigma.graph.coding.Coding;
 import java.util.HashSet;
 import java.util.Objects;
 

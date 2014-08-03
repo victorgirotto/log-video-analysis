@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package modeling.and.analysis.tool;
+package edu.asu.twosigma.tool.gui;
 
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;

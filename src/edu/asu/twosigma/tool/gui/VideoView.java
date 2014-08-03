@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package modeling.and.analysis.tool;
+package edu.asu.twosigma.tool.gui;
 
 import com.sun.jna.NativeLibrary;
 import java.awt.Canvas;
@@ -25,7 +25,7 @@ public class VideoView {
     private String mediaPath = "";        
     private EmbeddedMediaPlayer mediaPlayer;
     
-    VideoView(String vlcPath,String mediaURL, int width, int height)
+    public VideoView(String vlcPath,String mediaURL, int width, int height)
     {
         this.mediaPath = mediaURL;
         NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(), vlcPath);

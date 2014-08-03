@@ -4,10 +4,11 @@
  * and open the template in the editor.
  */
 
-package modeling.and.analysis.tool;
+package edu.asu.twosigma.tool.models;
 
-import edu.asu.mgb.problem.Action;
-import edu.asu.mgb.problem.State;
+import edu.asu.twosigma.tool.*;
+import edu.asu.twosigma.graph.models.Action;
+import edu.asu.twosigma.graph.models.State;
 
 /**
  *
