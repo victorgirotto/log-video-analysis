@@ -1,0 +1,266 @@
+Switch user 1,20:20h - 8/27/2013
+start,8:41h - 9/5/2013,,"	","	","	","	",
+Current problem index : 2 ,9:36h - 9/5/2013,,"	","	","	","	",
+Refresh problem ,9:36h - 9/5/2013,,"	","	","	","	",
+Replaying all steps ,9:36h - 9/5/2013,,"	","	","	","	",
+Click ,9:37h - 9/5/2013,,,,,,
+Make command Move 270,9:37h - 9/5/2013,,"	bent at waist",close,little/no movement,"	little/no movement",
+Click ,9:37h - 9/5/2013,,,,,,
+Make command Turn 270,9:37h - 9/5/2013,"	","	bent at waist",close,little/no movement,purposeful movement,
+Click,9:38h - 9/5/2013,"	",,,, , 
+Make command Turn 90,9:38h - 9/5/2013,,bent at waist,close,little/no movement,"	little/no movement",
+Click,9:38h - 9/5/2013, ,,,, , 
+Make command Turn 175,9:38h - 9/5/2013,,bent at waist,close,little/no movement,"	purposeful movement",
+Click,9:39h - 9/5/2013,,,,,, 
+Make command Move 3,9:39h - 9/5/2013,,"	bent at waist",close,little/no movement,"	purposeful movement",
+Click,9:39h - 9/5/2013,,,,,, 
+Make command Turn 90,9:40h - 9/5/2013,,"	bent at waist",close,purposeful movement,"	little/no movement",
+Click,9:40h - 9/5/2013,,,,,, 
+Make command Move 10,9:41h - 9/5/2013,,"	bent at waist",close,purposeful movement,"	purposeful movement",
+Click,9:42h - 9/5/2013,,,,,, 
+Make command Move 3,9:42h - 9/5/2013,,"	bent at waist",close,purposeful movement,"	purposeful movement",
+Checking the solution,9:42h - 9/5/2013,,"	","	","	purposeful movement",, 
+Solution is Incorrect,9:42h - 9/5/2013,,"	","	","	","	",
+Checked emotions are Sad/Guilty/Ashamed/Frustrated.,9:42h - 9/5/2013,,"	","	","	","	", 
+Click,9:43h - 9/5/2013,,,,, ,
+Make command Turn 7,9:44h - 9/5/2013,,"	kneeling w/knees on floor",close,purposeful movement,"	purposeful movement",
+Click,9:44h - 9/5/2013,,,,,, 
+Make command Plot point,9:45h - 9/5/2013,,"	kneeling w/knees on floor",close,purposeful movement,"	little/no movement",
+Click,9:45h - 9/5/2013,,,,,, 
+Make command Plot point,9:45h - 9/5/2013,,"	kneeling w/knees on floor",close,little/no movement,"	little/no movement",
+Click,9:46h - 9/5/2013,"	",,,, ,
+Make command Turn W,9:47h - 9/5/2013,,kneeling w/knees on floor,close,little/no movement,"	little/no movement",
+Click,9:48h - 9/5/2013,,,,,, 
+Make command Turn N,9:49h - 9/5/2013,,"	bent at waist",close,purposeful movement,"	purposeful movement",
+Click,9:49h - 9/5/2013,,,,,, 
+Make command Move 1,9:50h - 9/5/2013,,"	bent at waist",far,purposeful movement,"	purposeful movement",
+Checking the solution,9:50h - 9/5/2013,,"	","	close",,"	",
+Click,9:50h - 9/5/2013,,"	","	","	","	",
+Solution is Incorrect,9:50h - 9/5/2013,,"	","	","	","	purposeful movement",
+Checked emotions are Sad/Guilty/Ashamed/Pitiful/Frustrated.,9:50h - 9/5/2013,,"	","	","	","	",
+Click,9:51h - 9/5/2013,,,,,"	",
+Make command Turn 90,9:51h - 9/5/2013,,"	bent at waist",close,"	","	purposeful movement",
+Switch user 11,20:20h - 8/27/2013
+start,13:2h - 9/23/2013, , , , , 
+Current problem index : 2 ,13:31h - 9/23/2013, , , , , 
+Replaying all steps ,13:31h - 9/23/2013, , , , , 
+Click ,13:31h - 9/23/2013, ,,,, 
+Make command Turn W,13:32h - 9/23/2013, ,kneeling w/knees on floor,far,little/no movement,little/no movement
+Click ,13:32h - 9/23/2013, ,,,, 
+Make command Move 2,13:32h - 9/23/2013, ,kneeling w/knees on floor,far,little/no movement,little/no movement
+Click ,13:33h - 9/23/2013, ,,,, 
+Make command Turn S,13:33h - 9/23/2013, ,kneeling w/knees on floor,far,purposeful movement,little/no movement
+Click ,13:33h - 9/23/2013, ,,,, 
+Make command Move 3,13:33h - 9/23/2013, ,kneeling w/knees on floor,far,purposeful movement,little/no movement
+Click ,13:33h - 9/23/2013, ,,,, 
+Make command Plot point,13:34h - 9/23/2013, ,kneeling w/knees on floor,far,purposeful movement,little/no movement
+Checking the solution ,13:34h - 9/23/2013, , , , , 
+Solution is Correct ,13:34h - 9/23/2013, , , , , 
+Checked emotions are Happy/Proud. ,13:34h - 9/23/2013, , , , , 
+Switch user 12,20:20h - 8/27/2013
+start,9:12h - 9/24/2013, , , , , 
+Current problem index : 2 ,9:42h - 9/24/2013, , , , , 
+Refresh problem ,9:42h - 9/24/2013, , , , , 
+Replaying all steps ,9:42h - 9/24/2013, , , , , 
+Click ,9:43h - 9/24/2013, ,,,, 
+Make command Move -2,9:43h - 9/24/2013, ,kneeling,far,little/no movement,little/no movement
+Click ,9:44h - 9/24/2013,,,,, 
+Make command Turn S,9:45h - 9/24/2013,long,kneeling,far,little/no movement,purposeful movement
+Click ,9:45h - 9/24/2013,,,,, 
+Make command Move 3,9:45h - 9/24/2013,long,kneeling,far,little/no movement,little/no movement
+Click ,9:46h - 9/24/2013,,,,, 
+Make command Plot point,9:46h - 9/24/2013,long,kneeling w/knees on floor,far,purposeful movement,purposeful movement
+Checking the solution ,9:46h - 9/24/2013, , , , , 
+Solution is Correct ,9:46h - 9/24/2013, , , , , 
+Checked emotions are Happy. ,9:46h - 9/24/2013, , , , , 
+Refresh problem ,9:46h - 9/24/2013, , , , , 
+Switch user 15,20:20h - 8/27/2013
+start,8:11h - 9/26/2013, , , , , 
+Current problem index : 2 ,8:37h - 9/26/2013, , , , , 
+Refresh problem ,8:37h - 9/26/2013, , , , , 
+Replaying all steps ,8:37h - 9/26/2013, , , , , 
+Click ,8:37h - 9/26/2013,,,,,
+Click ,8:38h - 9/26/2013,,,,,
+Make command Turn 180,8:38h - 9/26/2013, ,kneeling w/knees on floor,far,little/no movement,purposeful movement
+Click ,8:39h - 9/26/2013, ,,,,
+Make command Move 3,8:39h - 9/26/2013, ,kneeling w/knees on floor,far,"little/no movement	",little/no movement
+Click ,8:39h - 9/26/2013, ,,,, 
+Make command Turn 180,8:40h - 9/26/2013, ,kneeling w/knees on floor,far,little/no movement,little/no movement
+Click ,8:40h - 9/26/2013, ,,,, 
+Make command Move 1,8:40h - 9/26/2013, ,kneeling w/knees on floor,far,little/no movement,purposeful movement
+Click ,8:40h - 9/26/2013, ,,,, 
+Make command Turn 90,8:41h - 9/26/2013, ,kneeling w/knees on floor,far,little/no movement,purposeful movement
+Click ,8:41h - 9/26/2013, ,,,, 
+Make command Turn 180,8:41h - 9/26/2013, ,kneeling w/knees on floor,far,little/no movement,little/no movement
+Click ,8:41h - 9/26/2013, ,,,, 
+Make command Move 3,8:42h - 9/26/2013, ,kneeling w/knees on floor,far,little/no movement,purposeful movement
+Replaying all steps ,8:42h - 9/26/2013, , , , , 
+Click ,8:42h - 9/26/2013, ,,,, 
+Make command Plot point,8:42h - 9/26/2013, ,kneeling w/knees on floor,far,little/no movement,little/no movement
+Checking the solution ,8:42h - 9/26/2013, , , , , 
+Solution is Correct ,8:42h - 9/26/2013, , , , , 
+Checked emotions are Hungry. ,8:42h - 9/26/2013, , , , , 
+Moving to next problem ,8:42h - 9/26/2013, , , , , 
+Switch user 16,20:20h - 8/27/2013
+start,10:57h - 9/26/2013, , , , , 
+Current problem index : 2 ,11:32h - 9/26/2013, , , , , 
+Refresh problem ,11:32h - 9/26/2013, , , , , 
+Replaying all steps ,11:32h - 9/26/2013, , , , , 
+Refresh problem ,11:32h - 9/26/2013, , , , , 
+Click ,11:33h - 9/26/2013,,,,, 
+Make command Turn W,11:33h - 9/26/2013,long,slightly bent at waist,close,purposeful movement,little/no movement
+Click ,11:33h - 9/26/2013, ,,,, 
+Make command Move 2,11:33h - 9/26/2013, ,slightly bent at waist,close,little/no movement,purposeful movement
+Click ,11:34h - 9/26/2013,,,,, 
+Make command Turn S,11:34h - 9/26/2013,long,slightly bent at waist,close,purposeful movement,purposeful movement
+Click ,11:34h - 9/26/2013, ,,,, 
+Make command Move 3,11:34h - 9/26/2013, ,slightly bent at waist,close,little/no movement,purposeful movement
+Click ,11:34h - 9/26/2013, ,,,, 
+Make command Plot point,11:35h - 9/26/2013, ,slightly bent at waist,close,little/no movement,purposeful movement
+Checking the solution ,11:35h - 9/26/2013, , , ,, 
+Solution is Correct ,11:35h - 9/26/2013, , , ,purposeful movement,purposeful movement
+Checked emotions are Happy/Hungry. ,11:35h - 9/26/2013,long, , , , 
+Switch user 19,20:20h - 8/27/2013
+start,10:44h - 9/27/2013, , , , , 
+Current problem index : 2 ,11:19h - 9/27/2013, , , , , 
+Refresh problem ,11:20h - 9/27/2013, , , , , 
+Replaying all steps ,11:20h - 9/27/2013, , , , , 
+Replaying all steps ,11:20h - 9/27/2013, , , , , 
+Refresh problem ,11:20h - 9/27/2013, , , , , 
+Click ,11:20h - 9/27/2013,,,,, 
+Make command Turn W,11:21h - 9/27/2013,long,kneeling,close,little/no movement,little/no movement
+Click ,11:21h - 9/27/2013,,,,, 
+Make command Move 2,11:21h - 9/27/2013,long,kneeling,close,little/no movement,purposeful movement
+Click ,11:22h - 9/27/2013,,,,, 
+Make command Turn S,11:23h - 9/27/2013,long,kneeling,close,little/no movement,purposeful movement
+Click ,11:23h - 9/27/2013,,,,, 
+Make command Move 3,11:24h - 9/27/2013,long,bent at waist,far,little/no movement,little/no movement
+Click ,11:24h - 9/27/2013,,,,, 
+Make command Plot point,11:25h - 9/27/2013,long,bent at waist,far,little/no movement,little/no movement
+Checking the solution ,11:25h - 9/27/2013, , , , , 
+Click ,11:25h - 9/27/2013, , , , , 
+Solution is Correct ,11:25h - 9/27/2013, , , , , 
+Checked emotions are Grateful. ,11:25h - 9/27/2013, , , , , 
+Moving to next problem ,11:25h - 9/27/2013, , , , , 
+Switch user 2,20:20h - 8/27/2013
+start,10:52h - 9/5/2013, , , , , 
+Current problem index : 2,11:29h - 9/5/2013, , , , , 
+Click,11:29h - 9/5/2013, ,,,, 
+Make command Move -2,11:30h - 9/5/2013, ,slightly bent at waist,close,little/no movement,purposeful movement
+Click,11:31h - 9/5/2013, ,,,, 
+Make command Turn S,11:31h - 9/5/2013, ,bent at waist,close,little/no movement,little/no movement
+Click,11:32h - 9/5/2013, ,,,, 
+Make command Move -3,11:32h - 9/5/2013, ,bent at waist,close,little/no movement,little/no movement
+Click,11:32h - 9/5/2013, ,,,, 
+Make command Move 3,11:33h - 9/5/2013, ,slightly bent at waist,far,little/no movement,little/no movement
+Click,11:33h - 9/5/2013, ,,,, 
+Make command Move 3,11:33h - 9/5/2013, ,bent at waist,far,little/no movement,little/no movement
+Click,11:34h - 9/5/2013, ,,,, 
+Make command Plot point,11:35h - 9/5/2013, ,bent at waist,close,little/no movement,little/no movement
+Checking the solution,11:35h - 9/5/2013, , , , , 
+Solution is Correct,11:35h - 9/5/2013, , , , , 
+Checked emotions are Happy.,11:35h - 9/5/2013, , , , , 
+Moving to next problem,11:35h - 9/5/2013, , , , , 
+Replaying all steps,11:35h - 9/5/2013, , , , , 
+Switch user 3,20:20h - 8/27/2013
+start,13:31h - 9/5/2013,"	","	","	","	",
+Current problem index : 2 ,14:23h - 9/5/2013,"	","	","	","	",
+Refresh problem ,14:23h - 9/5/2013,"	","	","	","	",
+Click ,14:24h - 9/5/2013,"	",,,,"	"
+Make command Turn S,14:24h - 9/5/2013,"	",bent at waist,"	far",little/no movement,little/no movement
+Click ,14:25h - 9/5/2013,"	",,,,"	"
+Make command Move 2,14:25h - 9/5/2013,"	",bent at waist,"	close",little/no movement,purposeful movement
+Click ,14:26h - 9/5/2013,"	",,,,"	"
+Make command Turn N,14:29h - 9/5/2013,long,bent at waist,"	far",little/no movement,purposeful movement
+Click ,14:30h - 9/5/2013,"	",,,,"	"
+Make command Move 1,14:30h - 9/5/2013,"	",bent at waist,"	far",little/no movement,purposeful movement
+Click ,14:30h - 9/5/2013,"	",,,,"	"
+Make command Move 1,14:31h - 9/5/2013,"	",bent at waist,"	far",little/no movement,little/no movement
+Click ,14:31h - 9/5/2013,"	",,,,"	"
+Make command Turn W,14:31h - 9/5/2013,"	",bent at waist,"	far",little/no movement,purposeful movement
+Click ,14:32h - 9/5/2013,"	",,,,"	"
+Make command Move 2,14:33h - 9/5/2013,long,bent at waist,"	close",purposeful movement,purposeful movement
+Click ,"14:33h - 9/5/2013	","	",,,,"	"
+Make command Turn S,14:33h - 9/5/2013,"	",bent at waist,"	close",purposeful movement,little/no movement
+Click ,14:34h - 9/5/2013,"	",,,,"	"
+Make command Move 3,14:34h - 9/5/2013,"	",bent at waist,"	far",little/no movement,little/no movement
+Click ,14:35h - 9/5/2013, ,,,,"	"
+Make command Plot point,"14:35h - 9/5/2013	","	",bent at waist,"	far",little/no movement,little/no movement
+Checking the solution ,14:35h - 9/5/2013,"	","	","	","	",
+Solution is Correct ,14:35h - 9/5/2013,"	","	","	","	",
+Checked emotions are Happy. ,14:36h - 9/5/2013,"	","	","	","	",
+Moving to next problem ,14:36h - 9/5/2013,"	","	","	","	",
+Switch user 4,20:20h - 8/27/2013
+start,8:37h - 9/6/2013,"	","	","	","	","	"
+Current problem index : 2 ,9:7h - 9/6/2013,"long	","	","	","	",
+Refresh problem ,9:7h - 9/6/2013,"	","	","	","	","	"
+Replaying all steps ,9:7h - 9/6/2013,"	","	","	","	","	"
+Click ,9:8h - 9/6/2013,"	",,,,"	"
+Make command Turn W,9:8h - 9/6/2013,"	",kneeling,far,little/no movement,little/no movement
+Click ,9:8h - 9/6/2013,"	",,,,"	"
+Make command Move 2,9:9h - 9/6/2013,"	",kneeling,close,purposeful movement,purposeful movement
+Click ,9:9h - 9/6/2013,"	",,,,"	"
+Make command Move 3,9:9h - 9/6/2013,"	",kneeling,close,little/no movement,purposeful movement
+Click ,9:10h - 9/6/2013,"	",,,,"	"
+Make command Plot point,9:10h - 9/6/2013,"	",kneeling w/knees on floor,close,little/no movement,purposeful movement
+Checking the solution ,9:10h - 9/6/2013,"	","	","	","	","	"
+Click ,9:10h - 9/6/2013,"	","	","	","	","	"
+Solution is Incorrect ,9:10h - 9/6/2013,"	","	","	","	","	"
+Checked emotions are Sad/Ashamed/Frustrated. ,9:11h - 9/6/2013,"	","	","	","	","	"
+Refresh problem ,9:12h - 9/6/2013,"	","	","	","	","	"
+Replaying all steps ,9:12h - 9/6/2013,"	","	","	","	","	"
+Click ,9:13h - 9/6/2013,"	",,,,"	"
+Make command Turn W,9:13h - 9/6/2013,"	",kneeling w/knees on floor,far,little/no movement,purposeful movement
+Click ,9:14h - 9/6/2013,"	",,,,"	"
+Make command Move 2,9:14h - 9/6/2013,"	",kneeling w/knees on floor,far,purposeful movement,purposeful movement
+Click ,9:15h - 9/6/2013,"	",,,,"	"
+Make command Turn S,9:15h - 9/6/2013,"	",kneeling,far,purposeful movement,purposeful movement
+Click ,9:15h - 9/6/2013,"	",,,,"	"
+Make command Move 3,9:15h - 9/6/2013,"	",kneeling,far,purposeful movement,purposeful movement
+Click ,9:16h - 9/6/2013,"	",,,,"	"
+Make command Plot point,9:16h - 9/6/2013,"long	",kneeling w/knees on floor,far,purposeful movement,
+Checking the solution ,9:16h - 9/6/2013,"	","	","	",purposeful movement,"	"
+Click ,9:16h - 9/6/2013,"	","	","	","	","	"
+Solution is Correct ,9:16h - 9/6/2013,"	","	","	","	","	"
+Checked emotions are Proud. ,9:17h - 9/6/2013,"	","	","	","	","	"
+Moving to next problem ,9:17h - 9/6/2013,"	","	","	","	","	"
+Switch user 5,20:20h - 8/27/2013
+start ,10:45h - 9/6/2013, , , , , 
+Current problem index : 2 ,11:16h - 9/6/2013, , , , , 
+Refresh problem ,11:16h - 9/6/2013, , , , , 
+Replaying all steps ,11:16h - 9/6/2013, , , , , 
+Click ,11:17h - 9/6/2013,,,,, 
+Make command Turn W,11:17h - 9/6/2013,long,bent at waist,close,little/no movement,little/no movement
+Click ,11:18h - 9/6/2013,,,,, 
+Make command Move 2,11:18h - 9/6/2013,long,bent at waist,close,little/no movement,purposeful movement
+Click ,11:18h - 9/6/2013,,,,, 
+Make command Turn S,11:19h - 9/6/2013,long,bent at waist,close,little/no movement,little/no movement
+Checking the solution ,10:20h - 9/6/2013, , , , , 
+Click ,11:19h - 9/6/2013,,,,, 
+Make command Plot point,11:19h - 9/6/2013,long,bent at waist,close,little/no movement,little/no movement
+Checking the solution ,11:19h - 9/6/2013, , , , , 
+Click ,11:19h - 9/6/2013, , , , ,
+Solution is Incorrect ,11:19h - 9/6/2013, , , , ,
+Checked emotions are Ashamed. ,11:19h - 9/6/2013, , , , ,
+Click ,11:20h - 9/6/2013,,,,,
+Make command Move 3,11:20h - 9/6/2013,long,bent at waist,close,little/no movement,little/no movement
+Click ,11:21h - 9/6/2013,,,,,
+Make command Plot point,11:21h - 9/6/2013,long,bent at waist,far,purposeful movement,purposeful movement
+Checking the solution ,11:21h - 9/6/2013, , , , ,
+Replaying all steps ,11:21h - 9/6/2013, , , , ,
+Refresh problem ,11:21h - 9/6/2013, , , , ,
+Replaying all steps ,11:21h - 9/6/2013, , , , ,
+Click ,11:22h - 9/6/2013,,,,,
+Make command Turn W,11:22h - 9/6/2013,long,bent at waist,close,little/no movement,little/no movement
+Click ,11:22h - 9/6/2013,,,,,
+Make command Move 2,11:22h - 9/6/2013,long,bent at waist,close,little/no movement,purposeful movement
+Click ,11:23h - 9/6/2013,,,,,
+Make command Turn S,11:23h - 9/6/2013,long,bent at waist,close,little/no movement,purposeful movement
+Click ,11:23h - 9/6/2013,,,,,
+Make command Move 3,11:23h - 9/6/2013,long,bent at waist,close,little/no movement,little/no movement
+Click ,11:24h - 9/6/2013,,,,,
+Make command Plot point,11:24h - 9/6/2013,long,bent at waist,far,little/no movement,purposeful movement
+Checking the solution ,11:24h - 9/6/2013, , , , , 
+Solution is Correct ,11:24h - 9/6/2013, , , , , 
+Checked emotions are Grateful. ,11:25h - 9/6/2013, , , , , 
+Moving to next problem ,11:25h - 9/6/2013, , , , ,

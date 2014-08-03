@@ -6,6 +6,7 @@
 
 package edu.asu.mgb.problem;
 
+import edu.asu.mgb.coding.Coding;
 import java.util.HashSet;
 import java.util.Objects;
 
@@ -22,6 +23,7 @@ public class Action {
     private Problem p;
     private HashSet<Integer> students;
     private boolean highlighted;
+    private Coding coding;
 
     public Action(String action, State origin, State destination, Problem p, Integer student) {
         this.action = action;
@@ -31,6 +33,7 @@ public class Action {
         this.count = 1;
         this.students = new HashSet<>();
         this.students.add(student);
+        this.coding = new Coding();
     }
     
     @Override
@@ -56,7 +59,9 @@ public class Action {
         StringBuilder s = new StringBuilder();
         s.append(this.action);
         s.append("\n");
-        s.append(students);
+        s.append(this.students);
+        s.append("\n");
+        s.append(this.coding);
         return s.toString();
     }
 
@@ -92,6 +97,10 @@ public class Action {
 
     public void setHighlighted(boolean highlighted) {
         this.highlighted = highlighted;
+    }
+
+    public Coding getCoding() {
+        return coding;
     }
    
 }

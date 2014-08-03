@@ -18,10 +18,13 @@ import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 import edu.uci.ics.jung.visualization.picking.PickedState;
 import edu.uci.ics.jung.visualization.renderers.Renderer;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.Stroke;
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.commons.collections15.Predicate;
 import org.apache.commons.collections15.Transformer;
 
@@ -32,7 +35,6 @@ import org.apache.commons.collections15.Transformer;
 public class GUIUtil {
     
     private static final Integer PADDING = 0;
-    
     public static Transformer defaultLabelTransformer;
     public static Transformer stringLabelTransformer;
     
@@ -46,6 +48,7 @@ public class GUIUtil {
         
         stringLabelTransformer = new ToStringLabeller();
     }
+    
     /**
      * Obtains the vertex filter by student;
      * @param student
@@ -87,7 +90,7 @@ public class GUIUtil {
         return new KKLayout<>(g);
     }
     
-    public static VisualizationViewer getGraphVisualizationViewerByStudent(Graph g, int student, int width, int height){
+    public static VisualizationViewer getGraphVisualizationViewerByStudent(Graph g, Transformer t, int student, int width, int height){
         Graph studentGraph;
         // Getting filters for students
         VertexPredicateFilter<State, Action> vertexFilter = GUIUtil.getVertexPredicateFilter(student);
@@ -95,10 +98,10 @@ public class GUIUtil {
         // Executing filter
         studentGraph = vertexFilter.transform(g);
         studentGraph = edgeFilter.transform(studentGraph);
-        return getGraphVisualizationViewer(studentGraph, width, height, new IndividualTransformer(student));
+        return getGraphVisualizationViewer(studentGraph, t, width, height, new IndividualTransformer(student));
     }
     
-    public static VisualizationViewer getGraphVisualizationViewer(Graph g, int width, int height, GUITransformer t){
+    public static VisualizationViewer getGraphVisualizationViewer(Graph g, Transformer labelTransformer, int width, int height, GUITransformer t){
         if(t == null){
             t = new AggregateTransformer();
         }
@@ -118,8 +121,16 @@ public class GUIUtil {
         vv.setSize(new Dimension(width, height));
         
         // Setting the transformers and appearance of edges and vertices
-        vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
-        vv.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller());
+        vv.getRenderContext().setEdgeFillPaintTransformer(new Transformer<Action, Paint>() {
+
+            @Override
+            public Paint transform(Action i) {
+                Integer total = i.getCoding().getSolutionCards()*63;
+                return new Color(255-total, 255, 255-total);
+            }
+        });
+        vv.getRenderContext().setVertexLabelTransformer(defaultLabelTransformer);
+        vv.getRenderContext().setEdgeLabelTransformer(defaultLabelTransformer);
         vv.getRenderContext().setEdgeStrokeTransformer(edgeStrokeTransformer);
         vv.getRenderContext().setVertexFillPaintTransformer(vertexPaint);
         vv.getRenderContext().setVertexShapeTransformer(vertexSize);
@@ -140,6 +151,83 @@ public class GUIUtil {
         pickedAction.addItemListener(MouseUtil.getEdgeVertexListener(pickedAction));
         
         return vv;
+    }
+
+    public static Transformer[] getVisualizationTransformerList() {
+        List<Transformer> list = new ArrayList<>();
+        
+        // Default
+        list.add(new Transformer<Action, Paint>() {
+            @Override
+            public String toString() {
+                return "None";
+            }            
+            @Override
+            public Paint transform(Action i) {
+                return new Color(0, 0, 0, 0);
+            }
+        });
+        // Solution cards
+        list.add(new Transformer<Action, Paint>() {
+            @Override
+            public String toString() {
+                return "Solution card";
+            }
+            @Override
+            public Paint transform(Action i) {
+                Integer total = i.getCoding().getSolutionCards()*63;
+                return new Color(255-total, 255, 255-total);
+            }
+        });
+        // Horizontal distance
+        list.add(new Transformer<Action, Paint>() {
+            @Override
+            public String toString() {
+                return "Horizontal Distance";
+            }
+            @Override
+            public Paint transform(Action i) {
+                Integer total = i.getCoding().getHorizontalProximity()*63;
+                return new Color(255-total, 255, 255-total);
+            }
+        });
+        // Vertical distance
+        list.add(new Transformer<Action, Paint>() {
+            @Override
+            public String toString() {
+                return "Vertical Distance";
+            }
+            @Override
+            public Paint transform(Action i) {
+                Integer total = i.getCoding().getVerticalProximity()*63;
+                return new Color(255-total, 255, 255-total);
+            }
+        });
+        // Movement before click
+        list.add(new Transformer<Action, Paint>() {
+            @Override
+            public String toString() {
+                return "Movement before click";
+            }
+            @Override
+            public Paint transform(Action i) {
+                Integer total = i.getCoding().getMovementBeforeClick()*63;
+                return new Color(255-total, 255, 255-total);
+            }
+        });
+        // Movement after click
+        list.add(new Transformer<Action, Paint>() {
+            @Override
+            public String toString() {
+                return "Movement after click";
+            }
+            @Override
+            public Paint transform(Action i) {
+                Integer total = i.getCoding().getMovementAfterClick()*63;
+                return new Color(255-total, 255, 255-total);
+            }
+        });
+        return list.toArray(new Transformer[list.size()]);
     }
     
     

@@ -52,7 +52,7 @@ public class State {
 
     @Override
     public String toString() {
-        return x.toString() + " / " + y.toString() + " / " + r.toString();
+        return x.intValue() + " / " + y.intValue()+ " / " + r.intValue();
     }
 
     @Override

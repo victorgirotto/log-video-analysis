@@ -1,6 +1,7 @@
 package modeling.and.analysis.tool;
 
 import au.com.bytecode.opencsv.CSVReader;
+import edu.asu.mgb.coding.Coding;
 import edu.asu.mgb.gui.GUIUtil;
 import edu.asu.mgb.problem.Action;
 import edu.asu.mgb.problem.ActionParsedDTO;
@@ -31,6 +32,9 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import org.apache.commons.collections15.Transformer;
 
 
 /*
@@ -83,20 +87,25 @@ public class MATMain extends javax.swing.JFrame {
     ActionParsedDTO dto;
     private Action currentEdge;
     private State currentVertex;
-    private Integer problemNum = 3;
+    private Integer problemNum = 2;
     private Integer studentNum = 3;
     private static final ProblemManager manager;
     static {
         manager = new ProblemManager();
     }
-    private static final String FILE = "logs.csv";
+    private static final String FILE = "logs/p2coded.csv";
     
     private VisualizationViewer<State, Action> vvStudent;
     private VisualizationViewer<State, Action> vvAll;
     
+    private final Transformer currentLabelTransformer;
+    
     
     public MATMain() {
+        
         initComponents();
+        
+        currentLabelTransformer = null;
         
         //Initialize variables
         ourLogMessages = new ArrayList<>();
@@ -159,13 +168,17 @@ public class MATMain extends javax.swing.JFrame {
                 // nextLine[] is an array of values from the line
                 action = nextLine[0];
                 dto = manager.handleAction(action);
-                System.out.println(dto);
-                // associate graph edges/vertexes with lines in log table
-                if(dto!=null)
-                {
-                    timestamp = nextLine[1];
-                    ourLogMessages.add(new LogMessage(timestamp, action, dto.getAction(), dto.getFinalState()));
+                if(dto != null){
+                    Coding c = new Coding(
+                            nextLine[2],
+                            nextLine[3],
+                            nextLine[4],
+                            nextLine[5],
+                            nextLine[6]
+                    );
+                    dto.getAction().getCoding().add(c);
                 }
+                System.out.println(dto);
             }
             
             // Setting the graphs
@@ -176,11 +189,18 @@ public class MATMain extends javax.swing.JFrame {
             this.jcbProblems.setModel(new DefaultComboBoxModel(manager.getProblemsList()));
             this.jcbStudents.setModel(new DefaultComboBoxModel(manager.getStudentsList()));
             
+            // Setting visualization combobox
+            setVisualizationCombo(this.jcbVisualization);
+            
         } catch (FileNotFoundException ex) {
             //Logger.getLogger(GUIApplication.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             //Logger.getLogger(GUIApplication.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    private void setVisualizationCombo(JComboBox jcbVisualization) {
+        jcbVisualization.setModel(new DefaultComboBoxModel<>(GUIUtil.getVisualizationTransformerList()));
     }
     
     private boolean compareVideoToLog()
@@ -231,8 +251,9 @@ public class MATMain extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jcbProblems = new javax.swing.JComboBox();
         allProblemsPanel = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
         jCheckBox1 = new javax.swing.JCheckBox();
+        jcbVisualization = new javax.swing.JComboBox();
+        jLabel3 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jcbStudents = new javax.swing.JComboBox();
@@ -254,7 +275,6 @@ public class MATMain extends javax.swing.JFrame {
         aboutMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1500, 900));
 
         videoPanel.setBackground(new java.awt.Color(0, 0, 0));
 
@@ -420,10 +440,8 @@ public class MATMain extends javax.swing.JFrame {
         );
         allProblemsPanelLayout.setVerticalGroup(
             allProblemsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 392, Short.MAX_VALUE)
+            .addGap(0, 401, Short.MAX_VALUE)
         );
-
-        jLabel3.setText("Click on the graph and press \"T\" to pan. Press \"P\" to get information from the graph.");
 
         jCheckBox1.setSelected(true);
         jCheckBox1.setText("Labels");
@@ -432,6 +450,15 @@ public class MATMain extends javax.swing.JFrame {
                 jCheckBox1ActionPerformed(evt);
             }
         });
+
+        jcbVisualization.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jcbVisualization.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbVisualizationActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Visualize Data");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -445,21 +472,27 @@ public class MATMain extends javax.swing.JFrame {
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jcbProblems, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jcbVisualization, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jCheckBox1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
-                        .addComponent(jLabel3)))
+                        .addGap(0, 358, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jcbProblems, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
-                    .addComponent(jCheckBox1))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel3)
+                        .addComponent(jcbVisualization, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jCheckBox1))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1)
+                        .addComponent(jcbProblems, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(allProblemsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -1051,6 +1084,13 @@ public class MATMain extends javax.swing.JFrame {
         selectedRowIndex = logTable.getSelectedRow();
     }//GEN-LAST:event_logTableMouseClicked
 
+    private void jcbVisualizationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbVisualizationActionPerformed
+        JComboBox box = (JComboBox)evt.getSource();
+        Transformer t = (Transformer)box.getSelectedItem();
+        vvAll.getRenderContext().setEdgeFillPaintTransformer(t);
+        vvAll.repaint();
+    }//GEN-LAST:event_jcbVisualizationActionPerformed
+
     // graph GUI methods
      public final void setCombinedGraph(){
         // Selecting a problem and obtaining its graph
@@ -1060,6 +1100,7 @@ public class MATMain extends javax.swing.JFrame {
         // Getting visualization server for all students
         this.vvAll = GUIUtil.getGraphVisualizationViewer(
                 g, 
+                null,
                 this.allProblemsPanel.getWidth(), 
                 this.allProblemsPanel.getHeight(),
                 null
@@ -1077,6 +1118,7 @@ public class MATMain extends javax.swing.JFrame {
         // Getting visualization server for one student
         this.vvStudent = GUIUtil.getGraphVisualizationViewerByStudent(
                 g, 
+                null,
                 this.studentNum, 
                 this.studentPanel.getWidth(), 
                 this.studentPanel.getHeight()
@@ -1167,6 +1209,7 @@ public class MATMain extends javax.swing.JFrame {
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JComboBox jcbProblems;
     private javax.swing.JComboBox jcbStudents;
+    private javax.swing.JComboBox jcbVisualization;
     private javax.swing.JButton logAddActionButton;
     private javax.swing.JButton logDeleteActionButton;
     private javax.swing.JButton logJumpToActionButton;

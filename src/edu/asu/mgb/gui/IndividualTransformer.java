@@ -59,7 +59,10 @@ public class IndividualTransformer extends GUITransformer{
             public Paint transform(State state) {
                 boolean isInCorrect = state.isStudentCorrect(student);
                 boolean isInWrong = state.isStudentWrong(student);
-                if(isInCorrect){
+                
+                if(state.isInitialState()){
+                    return Color.BLUE;
+                } else if(isInCorrect){
                     return Color.GREEN;
                 } else if(isInWrong){
                     return Color.RED;
