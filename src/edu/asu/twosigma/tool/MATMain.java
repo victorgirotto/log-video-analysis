@@ -6,11 +6,11 @@ import edu.asu.twosigma.tool.util.FileWriter;
 import au.com.bytecode.opencsv.CSVReader;
 import edu.asu.twosigma.graph.coding.Coding;
 import edu.asu.twosigma.graph.gui.GUIUtil;
-import edu.asu.twosigma.graph.problem.Action;
-import edu.asu.twosigma.graph.problem.ActionParsedDTO;
-import edu.asu.twosigma.graph.problem.Problem;
-import edu.asu.twosigma.graph.problem.ProblemManager;
-import edu.asu.twosigma.graph.problem.State;
+import edu.asu.twosigma.graph.models.Action;
+import edu.asu.twosigma.graph.models.ActionParsedDTO;
+import edu.asu.twosigma.graph.models.Problem;
+import edu.asu.twosigma.graph.models.ProblemManager;
+import edu.asu.twosigma.graph.models.State;
 import edu.asu.twosigma.tool.models.LogMessage;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
@@ -91,13 +91,16 @@ public class MATMain extends javax.swing.JFrame {
     ActionParsedDTO dto;
     private Action currentEdge;
     private State currentVertex;
-    private Integer problemNum = 2;
+    private Integer problemNum = 1;
     private Integer studentNum = 3;
     private static final ProblemManager manager;
     static {
         manager = new ProblemManager();
     }
-    private static final String FILE = "logs/p2coded.csv";
+//    private static final String FILE = "logs/new/quinnGrayMB-log.csv";
+//    private static final String FILE = "logs/new/dell-log.csv";
+//    private static final String FILE = "logs/new/macMini-log.csv";
+    private static final String FILE = "logs/new/whiteMB-log.csv";
     
     private VisualizationViewer<State, Action> vvStudent;
     private VisualizationViewer<State, Action> vvAll;
@@ -165,24 +168,27 @@ public class MATMain extends javax.swing.JFrame {
             // Reading CSV file into memory
             CSVReader reader = new CSVReader(new FileReader(FILE));
             String[] nextLine;
-            String action, timestamp = "";
+            String action, param, timestamp = "";
             
             // Iterating over each value in the file
             while ((nextLine = reader.readNext()) != null) {
                 // nextLine[] is an array of values from the line
-                action = nextLine[0];
-                dto = manager.handleAction(action);
-                if(dto != null){
-                    Coding c = new Coding(
-                            nextLine[2],
-                            nextLine[3],
-                            nextLine[4],
-                            nextLine[5],
-                            nextLine[6]
-                    );
-                    dto.getAction().getCoding().add(c);
+                if(nextLine.length > 6){
+                    action = nextLine[1];
+                    param = nextLine[2];
+                    dto = manager.handleAction(action, param);
+                    if(dto != null){
+                        Coding c = new Coding(
+                                nextLine[2],
+                                nextLine[3],
+                                nextLine[4],
+                                nextLine[5],
+                                nextLine[6]
+                        );
+                        dto.getAction().getCoding().add(c);
+                    }
+                    System.out.println(dto);
                 }
-                System.out.println(dto);
             }
             
             // Setting the graphs

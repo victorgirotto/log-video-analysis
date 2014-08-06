@@ -20,7 +20,7 @@ public class ProblemManager {
     private final HashMap<Integer, Problem> problems;
     private final HashSet<Integer> studentsList;
     private Problem currentProblem;
-    private Integer currentStudent;
+    private Integer currentStudent = 0;
     
     // Actions on the blacklist will not be considered into the graph
     private static final List<String> BLACKLIST;
@@ -28,8 +28,13 @@ public class ProblemManager {
     private static final String SWITCH_USER;
 
     static {
-        BLACKLIST = Arrays.asList("Click");
-        CHANGE_PROBLEM_STRING = "Current";
+        BLACKLIST = Arrays.asList(
+                "Type", 
+                "attribution", 
+                "checked emotions",
+                "Refresh"
+        );
+        CHANGE_PROBLEM_STRING = "change prob";
         SWITCH_USER = "Switch user ";
     }
     
@@ -59,7 +64,7 @@ public class ProblemManager {
         return problems.keySet().toArray(new Integer[problems.size()]);
     }
     
-    public ActionParsedDTO handleAction(String action){
+    public ActionParsedDTO handleAction(String action, String param){
         ActionParsedDTO dto = null;
         Problem newCurrentProblem;
         int problemNumber;
@@ -74,7 +79,7 @@ public class ProblemManager {
                 addStudentToSet(currentStudent);
             } else if(action.startsWith(CHANGE_PROBLEM_STRING)){
                 // Instantiate a new Problem, or load the existing one
-                problemNumber = Util.getProblemNumber(action);
+                problemNumber = Util.getProblemNumber(param);
                 if(problems.containsKey(problemNumber)){
                     // This problem has been analysed before. Retrieve it.
                     newCurrentProblem = problems.get(problemNumber);
@@ -88,7 +93,7 @@ public class ProblemManager {
                 this.currentProblem = newCurrentProblem;
             } else if(currentProblem != null) {
                 // Sending action to be handled by the problem (it will change the its state)
-                dto = currentProblem.handleAction(action);
+                dto = currentProblem.handleAction(action, param);
                 // Setting student number. Problem number was set in handleAction
                 if(dto != null){
                     dto.setStudent(currentStudent);

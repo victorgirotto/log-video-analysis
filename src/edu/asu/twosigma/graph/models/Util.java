@@ -28,8 +28,8 @@ public class Util {
         return new Integer(action.replaceAll(removeString, ""));
     }
     
-    public static Integer getProblemNumber(String action){
-        return new Integer(action.split(":")[1].trim());
+    public static Integer getProblemNumber(String param){
+        return new Integer(param.trim());
     }
     
     public static float getMoveUnits(String units){

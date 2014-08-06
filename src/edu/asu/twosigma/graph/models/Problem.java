@@ -26,15 +26,12 @@ public class Problem {
     private Integer maxAction;
     private ProblemManager manager;
     
-    private static final String MAKE_COMMAND = "Make command";
-    private static final String MOVE = "Move";
-    private static final String TURN = "Turn";
-    private static final String SOLUTION = "Solution";
-    private static final String SOLUTION_CORRECT = "Correct";
-    private static final String SOLUTION_INCORRECT = "Incorrect";
-    private static final String SOLUTION_SEPARATOR = "is ";
-    private static final String REFRESH = "Refresh";
-    private static final String ACTION_SPLITTER = " ";
+    private static final String MOVE = "moveDistance";
+    private static final String TURN = "turnAngle";
+    private static final String SOLUTION = "correctness feedback";
+    private static final String SOLUTION_CORRECT = "correct";
+    private static final String SOLUTION_INCORRECT = "incorrect";
+    private static final String REFRESH = "reset";
     
     public static final int INITIAL = -1;
     public static final int CORRECT = -2;
@@ -55,39 +52,34 @@ public class Problem {
         this.graph.addVertex(this.current);
     }
     
-    public ActionParsedDTO handleAction(String action){
-        String[] actionParam;
+    public ActionParsedDTO handleAction(String action, String actionParam){
         ActionParsedDTO dto = null;
-        if(action.startsWith(MAKE_COMMAND)){
-            // Separating action and parameters
-            action = action.replace(MAKE_COMMAND, "").trim();
-            actionParam = action.split(ACTION_SPLITTER);
-            switch(actionParam[0]){
-                case MOVE:{
-                    // State changes. Move n units
-                    float distance = Util.getMoveUnits(actionParam[1]);
-                    dto = move(action, distance);
-                    break;
-                }
-                case TURN:{
-                    // State changes. Turn n degrees
-                    float angle = Util.getTurnUnits(actionParam[1]);
-                    dto = turn(action, actionParam[1], angle);
-                    break;
+        
+        switch(action){
+            case MOVE:{
+                // State changes. Move n units
+                float distance = Util.getMoveUnits(actionParam);
+                dto = move(action, distance);
+                break;
+            }
+            case TURN:{
+                // State changes. Turn n degrees
+                float angle = Util.getTurnUnits(actionParam);
+                dto = turn(action, actionParam, angle);
+                break;
+            }
+            case SOLUTION:{
+                switch(actionParam){    
+                    case SOLUTION_CORRECT:
+                        current.setAsCorrectAnswer(manager.getCurrentStudent());
+                        break;
+                    case SOLUTION_INCORRECT:
+                        current.setAsIncorrectAnswer(manager.getCurrentStudent());
+                        break;
                 }
             }
-        } else if (action.startsWith(SOLUTION)){
-            actionParam = action.split(SOLUTION_SEPARATOR);
-            switch(actionParam[1]){
-                case SOLUTION_CORRECT:
-                    current.setAsCorrectAnswer(manager.getCurrentStudent());
-                    break;
-                case SOLUTION_INCORRECT:
-                    current.setAsIncorrectAnswer(manager.getCurrentStudent());
-                    break;
-            }
-        } else if (action.startsWith(REFRESH)){
-            goBackToOrigin();
+            case REFRESH:
+                goBackToOrigin();
         }
         // Setting the problem number
         if(dto != null){
